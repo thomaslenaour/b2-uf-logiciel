@@ -8,13 +8,9 @@ Création d'un CRM visant à faciliter la gestion et l'analyse globale pour les 
 
 ## Stack technique
 
----
-
 **Choix du langage :** JavaScript  
 **Choix des technologies :** Electron.js, Node.js, Express.js, MongoDB
 
 ## Getting started
-
----
 
 Coming soon.
