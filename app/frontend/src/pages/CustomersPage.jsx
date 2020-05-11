@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Pagination from '../components/Pagination'
 
 const CustomersPage = () => {
   const [customers, setCustomers] = useState([])
@@ -30,6 +31,38 @@ const CustomersPage = () => {
     setCurrentPage(1)
   }
 
+  // Filtrage des customers selon la recherche
+  const filteredCustomers = customers.filter(
+    customer =>
+      customer.name.toLowerCase().includes(search.toLowerCase()) ||
+      customer.city.toLowerCase().includes(search.toLowerCase())
+  )
+
+  // Pagination des données récupérées danss le filtrage des customers
+  const paginatedCustomers = Pagination.getData(
+    filteredCustomers,
+    currentPage,
+    itemsPerPage
+  )
+
+  // Gestion du changement de page
+  const handlePageChange = page => setCurrentPage(page)
+
+  // Gestion de la supression d'un client
+  const handleDelete = async id => {
+    // const originalCustomers = [...customers];
+
+    // setCustomers(customers.filter(customer => customer.id !== id));
+
+    try {
+      // await CustomersAPI.remove(id)
+      // TODO SUCCESS TOAST
+    } catch (error) {
+      // setCustomers(originalCustomers)
+      // TODO ERROR TOAST
+    }
+  }
+
   return (
     <div className="container my-5">
       <h1 className="text-center my-5 display-3">
@@ -39,12 +72,12 @@ const CustomersPage = () => {
         </span>
       </h1>
       <div className="d-flex justify-content-start align-items-center ">
-        <div className="form-group my-0 mx-2 ">
+        <div className="form-group my-0 mx-2 w-75">
           <input
             onChange={handleSearch}
             value={search}
             className="form-control"
-            placeholder="Rechercher ..."
+            placeholder="Entrez un nom de client ou encore une ville"
             type="text"
           />
         </div>
@@ -74,15 +107,13 @@ const CustomersPage = () => {
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
             <td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete()}
-                >
-                  Supprimer
-                </button>
-              </td>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDelete()}
+              >
+                Supprimer
+              </button>
             </td>
           </tr>
           <tr>
@@ -92,6 +123,15 @@ const CustomersPage = () => {
             <td>Bordeaux</td>
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
+            <td>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDelete()}
+              >
+                Supprimer
+              </button>
+            </td>
           </tr>
           <tr>
             <td>3</td>
@@ -100,6 +140,15 @@ const CustomersPage = () => {
             <td>Bordeaux</td>
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
+            <td>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDelete()}
+              >
+                Supprimer
+              </button>
+            </td>
           </tr>
           <tr>
             <td>4</td>
@@ -108,6 +157,15 @@ const CustomersPage = () => {
             <td>Bordeaux</td>
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
+            <td>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDelete()}
+              >
+                Supprimer
+              </button>
+            </td>
           </tr>
           <tr>
             <td>5</td>
@@ -116,9 +174,27 @@ const CustomersPage = () => {
             <td>Bordeaux</td>
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
+            <td>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDelete()}
+              >
+                Supprimer
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
+
+      {filteredCustomers.length > itemsPerPage && (
+        <Pagination
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          length={filteredCustomers.length}
+          onPageChanged={handlePageChange}
+        />
+      )}
     </div>
   )
 }
