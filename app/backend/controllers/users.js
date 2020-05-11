@@ -4,7 +4,32 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const HttpError = require('../models/http-error')
 
-const getUser = async (req, res, next) => {}
+const getUser = async (req, res, next) => {
+  const { userId } = req.params
+
+  let user
+  try {
+    user = await User.findById(userId, '-password')
+  } catch (err) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet identifiant',
+        500
+      )
+    )
+  }
+
+  if (!user) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet identifiant',
+        404
+      )
+    )
+  }
+
+  res.json({ user: user.toObject({ getters: true }) })
+}
 
 const updateUser = async (req, res, next) => {}
 
