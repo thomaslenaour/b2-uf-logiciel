@@ -31,7 +31,55 @@ const getUser = async (req, res, next) => {
   res.json({ user: user.toObject({ getters: true }) })
 }
 
-const updateUser = async (req, res, next) => {}
+const updateUser = async (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return next(new HttpError('Les données saisies sont invalides', 422))
+  }
+
+  const { name, email, contributionPct } = req.body
+  const { userId } = req.params
+
+  let user
+  try {
+    user = await User.findById(userId, '-password')
+  } catch (err) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet identifiant',
+        500
+      )
+    )
+  }
+
+  if (!user) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet identifiant',
+        404
+      )
+    )
+  }
+
+  user.name = name
+  user.email = email
+  user.contribution_pct = contributionPct
+  user.updated_at = new Date().getTime()
+
+  try {
+    await user.save()
+  } catch (err) {
+    return next(
+      new HttpError(
+        "Quelque chose s'est mal passé, impossible de modifier l'utilisateur",
+        500
+      )
+    )
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) })
+}
 
 const deleteUser = async (req, res, next) => {}
 
