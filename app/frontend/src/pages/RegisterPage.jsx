@@ -6,6 +6,7 @@ const RegisterPage = ({ history }) => {
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
+    contribution: '',
     password: '',
     confirm_password: ''
   })
@@ -51,7 +52,7 @@ const RegisterPage = ({ history }) => {
       <form onSubmit={handleSubmit} className="py-5">
         <Field
           name="name"
-          label="Nom"
+          label="Nom & Prénom"
           value={credentials.name}
           onChange={handleChange}
           placeholder="Nom"
@@ -65,6 +66,15 @@ const RegisterPage = ({ history }) => {
           onChange={handleChange}
           placeholder="Adresse email de connexion"
           type="email"
+          required
+        />
+        <Field
+          name="contribution"
+          label="Taux d'impositions"
+          value={credentials.contribution}
+          onChange={handleChange}
+          placeholder="Veuillez renseigner votre taux d'impositions en %"
+          type="number"
           required
         />
         <Field
