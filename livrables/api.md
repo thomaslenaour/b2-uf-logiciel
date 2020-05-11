@@ -6,8 +6,8 @@
 
 ## /api/users
 
-- **GET** /:userId => Un utilisateur en fonction de l'ID
-- **PATCH** /:userId => Modifier un utilisateur
+- **GET** /:userId => Un utilisateur en fonction de l'ID ✅
+- **PATCH** /:userId => Modifier un utilisateur ✅
 - **DELETE** /:userId => Supprimer un utilisateur
 - **POST** /signup => Inscription (créer un utilisateur) ✅
 - **POST** /login => Connexion (connecter un utilisateur) ✅
