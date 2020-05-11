@@ -34,7 +34,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
     contribution_pct: contributionPct,
     created_at: new Date().getTime(),
     customers: []
@@ -86,7 +86,7 @@ const login = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    return next(new HttpError('Le mot de passe ne correspond pas', 403))
+    return next(new HttpError('Le mot de passe est invalide', 403))
   }
 
   res.json({ userId: user.id, email: user.email })

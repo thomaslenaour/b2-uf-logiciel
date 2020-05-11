@@ -6,24 +6,24 @@
 
 ## /api/users
 
-- **GET** <span style="color: #f56565;">/<span style="color: #4299e1;">:userId</span></span> => Un utilisateur en fonction de l'ID
-- **PATCH** <span style="color: #f56565;">/<span style="color: #4299e1;">:userId</span></span> => Modifier un utilisateur
-- **DELETE** <span style="color: #f56565;">/<span style="color: #4299e1;">:userId</span></span> => Supprimer un utilisateur
-- **POST** <span style="color: #f56565;">/signup</span> => Inscription (créer un utilisateur)
-- **POST** <span style="color: #f56565;">/login</span> => Connexion (connecter un utilisateur)
+- **GET** /:userId => Un utilisateur en fonction de l'ID
+- **PATCH** /:userId => Modifier un utilisateur
+- **DELETE** /:userId => Supprimer un utilisateur
+- **POST** /signup => Inscription (créer un utilisateur) ✅
+- **POST** /login => Connexion (connecter un utilisateur) ✅
 
 ## /api/customers
 
-- **GET** <span style="color: #f56565;">/user/<span style="color: #4299e1;">:userId</span></span> => Tous clients d'un utilisateur
-- **GET** <span style="color: #f56565;">/<span style="color: #4299e1;">:customerId</span></span> => Un client en fonction de l'ID
-- **PATCH** <span style="color: #f56565;">/<span style="color: #4299e1;">:customerId</span></span> => Modifier un client
-- **DELETE** <span style="color: #f56565;">/<span style="color: #4299e1;">:customerId</span></span> => Supprimer un client
-- **POST** <span style="color: #f56565;">/</span> => Créer un client
+- **GET** /user/:userId => Tous clients d'un utilisateur
+- **GET** /:customerId => Un client en fonction de l'ID
+- **PATCH** /:customerId => Modifier un client
+- **DELETE** /:customerId => Supprimer un client
+- **POST** / => Créer un client
 
 ## /api/invoices
 
-- **GET** <span style="color: #f56565;">/user/<span style="color: #4299e1;">:userId</span></span> => Toutes les feactures d'un utilisateur
-- **GET** <span style="color: #f56565;">/<span style="color: #4299e1;">:invoiceId</span></span> => Une facture en fonction de l'ID
-- **PATCH** <span style="color: #f56565;">/<span style="color: #4299e1;">:invoiceId</span></span> => Modifier une facture
-- **DELETE** <span style="color: #f56565;">/<span style="color: #4299e1;">:invoiceId</span></span> => Supprimer une facture
-- **POST** <span style="color: #f56565;">/</span> => Créer une facture
+- **GET** /user/:userId => Toutes les feactures d'un utilisateur
+- **GET** /:invoiceId => Une facture en fonction de l'ID
+- **PATCH** /:invoiceId => Modifier une facture
+- **DELETE** /:invoiceId => Supprimer une facture
+- **POST** / => Créer une facture

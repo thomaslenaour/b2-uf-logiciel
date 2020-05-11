@@ -22,7 +22,7 @@ router.post(
 
       return true
     }),
-    check('contributionPct').isNumeric().in
+    check('contributionPct').isNumeric()
   ],
   usersController.signup
 )
