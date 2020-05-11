@@ -73,6 +73,17 @@ const CustomersPage = () => {
             <td>Bordeaux</td>
             <td className="text-center">4</td>
             <td className="text-center">3600€</td>
+            <td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => handleDelete()}
+                >
+                  Supprimer
+                </button>
+              </td>
+            </td>
           </tr>
           <tr>
             <td>2</td>
