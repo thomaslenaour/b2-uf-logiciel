@@ -54,7 +54,43 @@ const signup = async (req, res, next) => {
   res.status(201).json({ userId: createdUser.id, email: createdUser.email })
 }
 
-const login = async (req, res, next) => {}
+const login = async (req, res, next) => {
+  const { email, password } = req.body
+
+  let user
+  try {
+    user = await User.findOne({ email })
+  } catch (err) {
+    return next(
+      new HttpError(
+        'Impossile de se connecter pour le moment, veuillez vérifier vos identifiants',
+        500
+      )
+    )
+  }
+
+  if (!user) {
+    return next(new HttpError('Les identifiants sont invalides', 403))
+  }
+
+  let isValidPassword = false
+  try {
+    isValidPassword = await bcrypt.compare(password, user.password)
+  } catch (err) {
+    return next(
+      new HttpError(
+        'Impossile de se connecter pour le moment, veuillez vérifier vos identifiants',
+        500
+      )
+    )
+  }
+
+  if (!isValidPassword) {
+    return next(new HttpError('Le mot de passe ne correspond pas', 403))
+  }
+
+  res.json({ userId: user.id, email: user.email })
+}
 
 exports.getUser = getUser
 exports.updateUser = updateUser
