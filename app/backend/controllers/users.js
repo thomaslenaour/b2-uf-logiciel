@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
+const mongoose = require('mongoose')
 
 const User = require('../models/user')
 const HttpError = require('../models/http-error')
@@ -81,7 +82,36 @@ const updateUser = async (req, res, next) => {
   res.status(200).json({ user: user.toObject({ getters: true }) })
 }
 
-const deleteUser = async (req, res, next) => {}
+const deleteUser = async (req, res, next) => {
+  const { userId } = req.params
+
+  let user
+  try {
+    user = await User.findById(userId).populate('customers')
+  } catch (err) {
+    return next(new HttpError("Impossible de supprimer l'utilisateur", 500))
+  }
+
+  if (!user) {
+    return next(
+      new HttpError("L'identifiant ne correspond à aucun utilisateur", 404)
+    )
+  }
+
+  try {
+    const session = await mongoose.startSession()
+
+    session.startTransaction()
+    await user.remove({ session })
+    user.customers.pull()
+    await user.customers.save({ session })
+    await session.commitTransaction()
+  } catch (err) {
+    return next(new HttpError(err.message, 500))
+  }
+
+  res.status(200).json({ message: 'Utilisateur supprimé' })
+}
 
 const signup = async (req, res, next) => {
   const errors = validationResult(req)

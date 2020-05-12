@@ -1,8 +1,68 @@
+const { validationResult } = require('express-validator')
+const mongoose = require('mongoose')
+
+const HttpError = require('../models/http-error')
+const User = require('../models/user')
+const Customer = require('../models/customer')
+
 const getCustomers = async (req, res, next) => {}
 
 const getCustomer = async (req, res, next) => {}
 
-const createCustomer = async (req, res, next) => {}
+const createCustomer = async (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return next(new HttpError('Les données saisies sont invalides', 422))
+  }
+
+  const { name, address, postalCode, city, country, phone, creator } = req.body
+
+  const createdCustomer = new Customer({
+    name,
+    address,
+    postal_code: postalCode,
+    city,
+    country,
+    phone,
+    created_at: new Date().getTime(),
+    creator // will change
+  })
+
+  let user
+  try {
+    user = await User.findById(creator)
+  } catch (err) {
+    return next(
+      new HttpError('Impossible de créer un client, veuillez réessayer', 500)
+    )
+  }
+
+  if (!user) {
+    return next(
+      new HttpError("L'identifiant ne correspond à aucun utilisateur", 404)
+    )
+  }
+
+  try {
+    const session = await mongoose.startSession()
+
+    session.startTransaction()
+    await createdCustomer.save({ session })
+    user.customers.push(createdCustomer)
+    await user.save({ session })
+    await session.commitTransaction()
+  } catch (err) {
+    return next(
+      new HttpError(
+        'Impossible de créer un client pour le moment, veuillez réessayer',
+        500
+      )
+    )
+  }
+
+  res.status(201).json({ customer: createdCustomer })
+}
 
 const updateCustomer = async (req, res, next) => {}
 
