@@ -6,11 +6,11 @@
 
 ## /api/users
 
-- **GET** /:userId => Un utilisateur en fonction de l'ID ✅
-- **PATCH** /:userId => Modifier un utilisateur ✅
+- 🔐✅ **GET** /:userId => Un utilisateur en fonction de l'ID
+- 🔐✅ **PATCH** /:userId => Modifier un utilisateur
 - **DELETE** /:userId => Supprimer un utilisateur
-- **POST** /signup => Inscription (créer un utilisateur) ✅
-- **POST** /login => Connexion (connecter un utilisateur) ✅
+- ✅ **POST** /signup => Inscription (créer un utilisateur)
+- ✅ **POST** /login => Connexion (connecter un utilisateur)
 
 ## /api/customers
 
@@ -18,7 +18,7 @@
 - **GET** /:customerId => Un client en fonction de l'ID
 - **PATCH** /:customerId => Modifier un client
 - **DELETE** /:customerId => Supprimer un client
-- **POST** / => Créer un client
+- 🔐✅ **POST** / => Créer un client
 
 ## /api/invoices
 
