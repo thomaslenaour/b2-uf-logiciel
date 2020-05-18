@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
-const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
 const HttpError = require('../models/http-error')
@@ -26,6 +26,12 @@ const getUser = async (req, res, next) => {
         'Impossible de trouver un utilisateur associé à cet identifiant',
         404
       )
+    )
+  }
+
+  if (user.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action.", 401)
     )
   }
 
@@ -63,6 +69,12 @@ const updateUser = async (req, res, next) => {
     )
   }
 
+  if (user.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action.", 401)
+    )
+  }
+
   user.name = name
   user.email = email
   user.contribution_pct = contributionPct
@@ -87,30 +99,25 @@ const deleteUser = async (req, res, next) => {
 
   let user
   try {
-    user = await User.findById(userId).populate('customers')
-  } catch (err) {
-    return next(new HttpError("Impossible de supprimer l'utilisateur", 500))
+    user = await User.findById(userId)
+  } catch (error) {
+    return next(new HttpError('Impossible de supprimer cet utilisateur', 500))
   }
 
   if (!user) {
     return next(
-      new HttpError("L'identifiant ne correspond à aucun utilisateur", 404)
+      new HttpError(
+        "Impossible de supprimer l'utilisateur associé à cet ID",
+        404
+      )
     )
   }
 
-  try {
-    const session = await mongoose.startSession()
-
-    session.startTransaction()
-    await user.remove({ session })
-    user.customers.pull()
-    await user.customers.save({ session })
-    await session.commitTransaction()
-  } catch (err) {
-    return next(new HttpError(err.message, 500))
+  if (user.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action.", 401)
+    )
   }
-
-  res.status(200).json({ message: 'Utilisateur supprimé' })
 }
 
 const signup = async (req, res, next) => {
@@ -154,7 +161,7 @@ const signup = async (req, res, next) => {
     )
   }
 
-  res.status(201).json({ userId: createdUser.id, email: createdUser.email })
+  res.status(201).json({ user: createdUser })
 }
 
 const login = async (req, res, next) => {
@@ -192,7 +199,20 @@ const login = async (req, res, next) => {
     return next(new HttpError('Le mot de passe est invalide', 403))
   }
 
-  res.json({ userId: user.id, email: user.email })
+  let token
+  try {
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_KEY,
+      { expiresIn: '1h' }
+    )
+  } catch (err) {
+    return next(
+      new HttpError('Impossible de se connecter, veuillez réessayer', 500)
+    )
+  }
+
+  res.json({ userId: user.id, email: user.email, token })
 }
 
 exports.getUser = getUser

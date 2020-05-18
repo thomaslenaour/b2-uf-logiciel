@@ -11,7 +11,8 @@ const customerSchema = Schema({
   phone: { type: String },
   created_at: { type: Number, required: true },
   updated_at: { type: Number },
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+  invoices: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Invoice' }]
 })
 
 module.exports = mongoose.model('Customer', customerSchema)

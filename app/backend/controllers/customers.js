@@ -16,7 +16,7 @@ const createCustomer = async (req, res, next) => {
     return next(new HttpError('Les données saisies sont invalides', 422))
   }
 
-  const { name, address, postalCode, city, country, phone, creator } = req.body
+  const { name, address, postalCode, city, country, phone } = req.body
 
   const createdCustomer = new Customer({
     name,
@@ -25,22 +25,23 @@ const createCustomer = async (req, res, next) => {
     city,
     country,
     phone,
+    creator: req.userData.userId,
     created_at: new Date().getTime(),
-    creator // will change
+    invoices: []
   })
 
   let user
   try {
-    user = await User.findById(creator)
-  } catch (err) {
+    user = await User.findById(req.userData.userId)
+  } catch (error) {
     return next(
-      new HttpError('Impossible de créer un client, veuillez réessayer', 500)
+      new HttpError("La création d'un client a échoué, merci de réessayer", 500)
     )
   }
 
   if (!user) {
     return next(
-      new HttpError("L'identifiant ne correspond à aucun utilisateur", 404)
+      new HttpError("Impossible de trouver l'utilisateur associé à cet ID", 404)
     )
   }
 
@@ -55,7 +56,7 @@ const createCustomer = async (req, res, next) => {
   } catch (err) {
     return next(
       new HttpError(
-        'Impossible de créer un client pour le moment, veuillez réessayer',
+        'Impossible de créer un client pour le moment, merci de réessayer',
         500
       )
     )
