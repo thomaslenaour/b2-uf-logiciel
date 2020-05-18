@@ -15,7 +15,7 @@
 ## /api/customers
 
 - 🔐✅ **GET** / => Tous clients d'un utilisateur
-- **GET** /:customerId => Un client en fonction de l'ID
+- 🔐✅ **GET** /:customerId => Un client en fonction de l'ID
 - **PATCH** /:customerId => Modifier un client
 - **DELETE** /:customerId => Supprimer un client
 - 🔐✅ **POST** / => Créer un client

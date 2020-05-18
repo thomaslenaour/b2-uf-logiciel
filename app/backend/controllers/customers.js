@@ -42,7 +42,35 @@ const getCustomers = async (req, res, next) => {
   })
 }
 
-const getCustomer = async (req, res, next) => {}
+const getCustomer = async (req, res, next) => {
+  const { customerId } = req.params
+
+  let customer
+  try {
+    customer = await Customer.findOne({
+      creator: req.userData.userId,
+      _id: customerId
+    })
+  } catch (err) {
+    return next(
+      new HttpError(
+        "Impossible d'obtenir le client, un problème est survenu",
+        500
+      )
+    )
+  }
+
+  if (!customer) {
+    return next(
+      new HttpError(
+        "Impossible d'obtenir le client, un problème est survenu",
+        500
+      )
+    )
+  }
+
+  res.json({ customer: customer.toObject({ getters: true }) })
+}
 
 const createCustomer = async (req, res, next) => {
   const errors = validationResult(req)
