@@ -5,7 +5,42 @@ const HttpError = require('../models/http-error')
 const User = require('../models/user')
 const Customer = require('../models/customer')
 
-const getCustomers = async (req, res, next) => {}
+const getCustomers = async (req, res, next) => {
+  const { customerId } = req.params
+
+  let user
+  try {
+    user = await User.findById(req.userData.userId).populate('customers')
+  } catch (err) {
+    return next(
+      new HttpError(
+        "Impossible d'obtenir les clients, un problème est survenu",
+        500
+      )
+    )
+  }
+
+  if (!user) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet ID',
+        404
+      )
+    )
+  }
+
+  if (user.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  res.json({
+    customers: user.customers.map(customer =>
+      customer.toObject({ getters: true })
+    )
+  })
+}
 
 const getCustomer = async (req, res, next) => {}
 
