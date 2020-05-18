@@ -11,7 +11,18 @@ router.use(checkAuth)
 
 router.get('/', customersController.getCustomers)
 router.get('/:customerId', customersController.getCustomer)
-router.patch('/:customerId', customersController.updateCustomer)
+router.patch(
+  '/:customerId',
+  [
+    check('name').not().isEmpty(),
+    check('address').not().isEmpty(),
+    check('postalCode').not().isEmpty(),
+    check('city').not().isEmpty(),
+    check('country').not().isEmpty(),
+    check('phone').not().isEmpty()
+  ],
+  customersController.updateCustomer
+)
 router.delete('/:customerId', customersController.deleteCustomer)
 router.post(
   '/',

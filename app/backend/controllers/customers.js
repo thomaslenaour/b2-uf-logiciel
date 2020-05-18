@@ -47,25 +47,18 @@ const getCustomer = async (req, res, next) => {
 
   let customer
   try {
-    customer = await Customer.findOne({
-      creator: req.userData.userId,
-      _id: customerId
-    })
+    customer = await Customer.findById(customerId)
   } catch (err) {
-    return next(
-      new HttpError(
-        "Impossible d'obtenir le client, un problème est survenu",
-        500
-      )
-    )
+    return next(new HttpError('Aucun client associé à cet identifiant', 500))
   }
 
   if (!customer) {
+    return next(new HttpError('Aucun client associé à cet identifiant', 404))
+  }
+
+  if (customer.creator.toString() !== req.userData.userId) {
     return next(
-      new HttpError(
-        "Impossible d'obtenir le client, un problème est survenu",
-        500
-      )
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
     )
   }
 
@@ -96,7 +89,7 @@ const createCustomer = async (req, res, next) => {
   let user
   try {
     user = await User.findById(req.userData.userId)
-  } catch (error) {
+  } catch (err) {
     return next(
       new HttpError("La création d'un client a échoué, merci de réessayer", 500)
     )
@@ -128,7 +121,56 @@ const createCustomer = async (req, res, next) => {
   res.status(201).json({ customer: createdCustomer })
 }
 
-const updateCustomer = async (req, res, next) => {}
+const updateCustomer = async (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError(
+        'Les données saisies sont invalides, veuillez réessayer',
+        422
+      )
+    )
+  }
+
+  const { customerId } = req.params
+  const { name, address, postalCode, city, country, phone } = req.body
+
+  let customer
+  try {
+    customer = await Customer.findById(customerId)
+  } catch (err) {
+    return next(new HttpError('Aucun client associé à cet identifiant', 500))
+  }
+
+  if (!customer) {
+    return next(new HttpError('Aucun client associé à cet identifiant', 404))
+  }
+
+  if (customer.creator.toString() !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  customer.name = name
+  customer.address = address
+  customer.postal_code = postalCode
+  customer.city = city
+  customer.country = country
+  customer.phone = phone
+  customer.updated_at = new Date().getTime()
+
+  try {
+    await customer.save()
+  } catch (err) {
+    return next(
+      new HttpError("Quelque chose s'est mal passé, veuillez réessayer", 500)
+    )
+  }
+
+  res.status(200).json({ customer: customer.toObject({ getters: true }) })
+}
 
 const deleteCustomer = async (req, res, next) => {}
 
