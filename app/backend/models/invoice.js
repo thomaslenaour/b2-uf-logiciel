@@ -13,4 +13,4 @@ const invoiceSchema = new Schema({
   customer: { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }
 })
 
-module.exports = mongoose.Model('Invoice', invoiceSchema)
+module.exports = mongoose.model('Invoice', invoiceSchema)
