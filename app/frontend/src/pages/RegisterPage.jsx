@@ -26,6 +26,7 @@ const RegisterPage = ({ history }) => {
     try {
       if (credentials.confirm_password === credentials.password) {
         console.log(credentials)
+
         setErrorLogin('d-none')
       } else {
         setErrorLogin('')
