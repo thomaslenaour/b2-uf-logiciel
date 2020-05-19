@@ -7,7 +7,7 @@ const customersController = require('../controllers/customers')
 const router = express.Router()
 
 // /api/customers
-// router.use(checkAuth)
+router.use(checkAuth)
 
 router.get('/', customersController.getCustomers)
 router.get('/:customerId', customersController.getCustomer)
