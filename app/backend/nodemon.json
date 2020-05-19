@@ -1,7 +1,0 @@
-{
-  "env": {
-    "DB_USER": "boiss",
-    "DB_PASSWORD": "alexboisseau",
-    "DB_NAME": "ynovcrm"
-  }
-}

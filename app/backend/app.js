@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const usersRoutes = require('./routes/users')
 const customersRoutes = require('./routes/customers')
 const invoicesRoutes = require('./routes/invoices')
-
 const HttpError = require('./models/http-error')
 
 const app = express()
