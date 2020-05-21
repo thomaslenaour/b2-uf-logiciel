@@ -20,6 +20,7 @@
     "prettier/prettier": "error",
     "no-unused-vars": "off",
     "no-console": "off",
+    "no-shadow": "off",
     "func-names": "off",
     "no-process-exit": "off",
     "object-shorthand": "off",

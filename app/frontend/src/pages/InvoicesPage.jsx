@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Pagination from '../components/Pagination'
 import { Link } from 'react-router-dom'
+import Pagination from '../components/Pagination'
 
 const InvoicesPage = () => {
   const [invoices, setInvoices] = useState([])
@@ -83,8 +83,8 @@ const InvoicesPage = () => {
             type="text"
           />
         </div>
-        <Link to="#" className="btn btn-primary">
-          Création d&apos;un nouveau client
+        <Link to="/invoices/new" className="btn btn-primary">
+          Création d&apos;une nouvelle facture
         </Link>
       </div>
 

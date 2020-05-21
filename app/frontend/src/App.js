@@ -7,6 +7,8 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import CustomersPage from './pages/CustomersPage'
 import InvoicesPage from './pages/InvoicesPage'
+import CustomerPage from './pages/CustomerPage'
+import InvoicePage from './pages/InvoicePage'
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/customers" component={CustomersPage} />
         <Route exact path="/invoices" component={InvoicesPage} />
+        <Route exact path="/customers/:id" component={CustomerPage} />
+        <Route exact path="/invoices/:id" component={InvoicePage} />
       </Switch>
     </Router>
   )

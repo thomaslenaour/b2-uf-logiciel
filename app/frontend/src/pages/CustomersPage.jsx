@@ -81,7 +81,7 @@ const CustomersPage = () => {
             type="text"
           />
         </div>
-        <Link to="#" className="btn btn-primary">
+        <Link to="/customers/new" className="btn btn-primary">
           Création d&apos;un nouveau client
         </Link>
       </div>
@@ -114,6 +114,13 @@ const CustomersPage = () => {
               >
                 Supprimer
               </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ml-2"
+                onClick={() => handleDelete()}
+              >
+                Modifier
+              </button>
             </td>
           </tr>
           <tr>
@@ -130,6 +137,13 @@ const CustomersPage = () => {
                 onClick={() => handleDelete()}
               >
                 Supprimer
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ml-2"
+                onClick={() => handleDelete()}
+              >
+                Modifier
               </button>
             </td>
           </tr>
@@ -148,6 +162,13 @@ const CustomersPage = () => {
               >
                 Supprimer
               </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ml-2"
+                onClick={() => handleDelete()}
+              >
+                Modifier
+              </button>
             </td>
           </tr>
           <tr>
@@ -165,6 +186,13 @@ const CustomersPage = () => {
               >
                 Supprimer
               </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ml-2"
+                onClick={() => handleDelete()}
+              >
+                Modifier
+              </button>
             </td>
           </tr>
           <tr>
@@ -181,6 +209,13 @@ const CustomersPage = () => {
                 onClick={() => handleDelete()}
               >
                 Supprimer
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ml-2"
+                onClick={() => handleDelete()}
+              >
+                Modifier
               </button>
             </td>
           </tr>

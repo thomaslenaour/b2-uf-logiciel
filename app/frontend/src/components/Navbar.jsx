@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const Navbar = props => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light py-4">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-4">
       <div className="container">
         <NavLink className="navbar-brand" to="/">
           Ynov CRM
@@ -33,17 +33,26 @@ const Navbar = props => {
 
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <NavLink to="/login" className="btn btn-primary mx-2">
+              <NavLink
+                to="/login"
+                className="btn btn-light text-primary border-primary mx-2"
+              >
                 Connexion
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="#" className="btn btn-danger mx-2">
+              <NavLink
+                to="#"
+                className="btn btn-light text-danger border-danger mx-2"
+              >
                 Déconnexion
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/register" className="btn btn-primary mx-2">
+              <NavLink
+                to="/register"
+                className="btn btn-light text-primary border-primary mx-2"
+              >
                 Inscription
               </NavLink>
             </li>

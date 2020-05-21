@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Field from '../components/Field'
+import UsersAPI from '../services/UsersAPI'
 
 const RegisterPage = ({ history }) => {
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
-    contribution: '',
+    contributionPct: '',
     password: '',
-    confirm_password: ''
+    passwordConfirmation: ''
   })
 
-  const [errorLogin, setErrorLogin] = useState('d-none')
+  const [errorRegistration, setErrorRegistration] = useState('d-none')
 
   // Gestion des champs
   const handleChange = ({ currentTarget }) => {
@@ -24,18 +25,15 @@ const RegisterPage = ({ history }) => {
     event.preventDefault()
 
     try {
-      if (credentials.confirm_password === credentials.password) {
-        console.log(credentials)
-
-        setErrorLogin('d-none')
+      if (credentials.passwordConfirmation === credentials.password) {
+        await UsersAPI.createUser(credentials)
+        setErrorRegistration('d-none')
       } else {
-        setErrorLogin('')
+        setErrorRegistration('')
+        console.log('mdp inccorect')
       }
-
-      // TODO SUCCESS TOAST
     } catch (error) {
-      setErrorLogin('')
-      // TODO ERROR TOAST
+      setErrorRegistration('')
     }
   }
 
@@ -47,7 +45,7 @@ const RegisterPage = ({ history }) => {
           ✍️
         </span>
       </h1>
-      <p className={`my-3 text-danger text-lg ${errorLogin}`}>
+      <p className={`my-3 text-danger text-lg ${errorRegistration}`}>
         Les informations sont invalides !
       </p>
       <form onSubmit={handleSubmit} className="py-5">
@@ -56,7 +54,6 @@ const RegisterPage = ({ history }) => {
           label="Nom & Prénom"
           value={credentials.name}
           onChange={handleChange}
-          placeholder="Nom"
           type="text"
           required
         />
@@ -70,9 +67,9 @@ const RegisterPage = ({ history }) => {
           required
         />
         <Field
-          name="contribution"
+          name="contributionPct"
           label="Taux d'impositions"
-          value={credentials.contribution}
+          value={credentials.contributionPct}
           onChange={handleChange}
           placeholder="Veuillez renseigner votre taux d'impositions en %"
           type="number"
@@ -87,9 +84,9 @@ const RegisterPage = ({ history }) => {
           required
         />
         <Field
-          name="confirm_password"
+          name="passwordConfirmation"
           label="Confirmation du mot de passe"
-          value={credentials.confirm_password}
+          value={credentials.passwordConfirmation}
           onChange={handleChange}
           placeholder="Veuillez confirmer votre mot de passe"
           type="password"
