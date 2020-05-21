@@ -7,7 +7,7 @@ const invoicesController = require('../controllers/invoices')
 const router = express.Router()
 
 // /api/invoices
-// router.use(checkAuth)
+router.use(checkAuth)
 
 router.get('/user/:userId', invoicesController.getInvoices)
 router.get('/:invoiceId', invoicesController.getInvoice)

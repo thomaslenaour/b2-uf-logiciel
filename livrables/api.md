@@ -26,7 +26,7 @@
 - 🔐 **GET** /:invoiceId => Une facture en fonction de l'ID
 - 🔐 **PATCH** /:invoiceId => Modifier une facture
 - 🔐 **DELETE** /:invoiceId => Supprimer une facture
-- 🔐 **POST** / => Créer une facture
+- 🔐✅ **POST** / => Créer une facture
 
 # Exemples de requêtes
 

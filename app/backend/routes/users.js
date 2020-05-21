@@ -26,7 +26,7 @@ router.post(
 )
 router.post('/login', usersController.login)
 
-// router.use(checkAuth)
+router.use(checkAuth)
 
 router.get('/:userId', usersController.getUser)
 router.patch(
