@@ -10,8 +10,6 @@ import InvoicesPage from './pages/InvoicesPage'
 import CustomerPage from './pages/CustomerPage'
 import InvoicePage from './pages/InvoicePage'
 
-const Store = require('electron-store')
-
 const App = () => {
   return (
     <Router>
