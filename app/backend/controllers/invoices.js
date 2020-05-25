@@ -6,9 +6,61 @@ const Customer = require('../models/customer')
 const User = require('../models/user')
 const HttpError = require('../models/http-error')
 
-const getInvoices = async (req, res, next) => {}
+const getInvoices = async (req, res, next) => {
+  let user
+  try {
+    user = await User.findById(req.userData.userId).populate('invoices')
+  } catch (err) {
+    return next(
+      new HttpError(
+        "Impossible d'obtenir les factures associés à cet ID, un problème est survenu",
+        500
+      )
+    )
+  }
 
-const getInvoice = async (req, res, next) => {}
+  if (!user) {
+    return next(
+      new HttpError(
+        'Impossible de trouver un utilisateur associé à cet ID',
+        404
+      )
+    )
+  }
+
+  if (user.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  res.json({
+    invoices: user.invoices.map(invoice => invoice.toObject({ getters: true }))
+  })
+}
+
+const getInvoice = async (req, res, next) => {
+  const { invoiceId } = req.params
+
+  let invoice
+  try {
+    invoice = await Invoice.findById(invoiceId)
+  } catch (err) {
+    return next(new HttpError('Aucune facture associée à cet identifiant', 500))
+  }
+
+  if (!invoice) {
+    return next(new HttpError('Aucune facture associée à cet identifiant', 404))
+  }
+
+  if (invoice.creator.toString() !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  res.json({ invoice: invoice.toObject({ getters: true }) })
+}
 
 const createInvoice = async (req, res, next) => {
   const errors = validationResult(req)
@@ -17,8 +69,7 @@ const createInvoice = async (req, res, next) => {
     return next(new HttpError('Les données saisies sont invalides', 422))
   }
 
-  const { category, amount, isPaid, invoicePdf } = req.body
-  const { customerId } = req.params
+  const { category, amount, isPaid, invoicePdf, customerId } = req.body
 
   const createdInvoice = new Invoice({
     category,

@@ -5,7 +5,7 @@ const { Schema } = mongoose
 const invoiceSchema = new Schema({
   category: { type: String, required: true },
   reference: { type: String, required: true },
-  amount: { type: Number, required: true },
+  amount: { type: String, required: true },
   invoice_pdf: { type: String, required: true },
   is_paid: { type: Boolean, required: true },
   created_at: { type: Number, required: true },

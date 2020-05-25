@@ -14,7 +14,7 @@ router.get('/:invoiceId', invoicesController.getInvoice)
 router.patch('/:invoiceId', invoicesController.updateInvoice)
 router.delete('/:invoiceId', invoicesController.deleteInvoice)
 router.post(
-  '/:customerId',
+  '/',
   [
     check('category').not().isEmpty(),
     check('amount').isNumeric(),
