@@ -27,6 +27,7 @@
     "class-methods-use-this": "off",
     "react/prop-types": "off",
     "consistent-return": "off",
+    "react/jsx-one-expression-per-line": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/jsx-filename-extension": [
       1,
