@@ -1,18 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-
-const Store = window.require('electron-store')
+import AuthContext from '../context/auth'
 
 const HomePage = () => {
-  const store = new Store()
-
-  store.set('unicorn', '🦄')
-  console.log(store.get('unicorn'))
   return (
     <>
-      <h1 className="display-3 text-center my-5">
-        Ynov CRM {store.get('unicorn')}
-      </h1>
+      <h1 className="display-3 text-center my-5">Ynov CRM</h1>
       <div className="row pt-5">
         <div className="col-6 text-center">
           <img
