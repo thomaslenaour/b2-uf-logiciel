@@ -6,8 +6,6 @@ const User = require('../models/user')
 const Customer = require('../models/customer')
 
 const getCustomers = async (req, res, next) => {
-  const { customerId } = req.params
-
   let user
   try {
     user = await User.findById(req.userData.userId).populate('customers')
@@ -171,7 +169,40 @@ const updateCustomer = async (req, res, next) => {
   res.status(200).json({ customer: customer.toObject({ getters: true }) })
 }
 
-const deleteCustomer = async (req, res, next) => {}
+const deleteCustomer = async (req, res, next) => {
+  const { customerId } = req.params
+
+  let customer
+  try {
+    customer = await Customer.findById(customerId).populate('creator')
+  } catch (err) {
+    return next(new HttpError('Impossible de supprimer ce client', 500))
+  }
+
+  if (!customer) {
+    return next(new HttpError('Impossible de supprimer ce client', 500))
+  }
+
+  if (customer.creator.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  try {
+    const session = await mongoose.startSession()
+
+    session.startTransaction()
+    await customer.remove({ session })
+    customer.creator.customers.pull(customer)
+    await customer.creator.save({ session })
+    await session.commitTransaction()
+  } catch (err) {
+    return next(new HttpError('Impossible de supprimer ce client', 500))
+  }
+
+  res.status(200).json({ message: 'Le client a bien été supprimé' })
+}
 
 exports.getCustomers = getCustomers
 exports.getCustomer = getCustomer

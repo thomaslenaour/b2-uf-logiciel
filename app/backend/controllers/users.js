@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
+const Invoice = require('../models/invoice')
+const Customer = require('../models/customer')
 const HttpError = require('../models/http-error')
 
 const getUser = async (req, res, next) => {
@@ -95,11 +97,9 @@ const updateUser = async (req, res, next) => {
 }
 
 const deleteUser = async (req, res, next) => {
-  const { userId } = req.params
-
   let user
   try {
-    user = await User.findById(userId)
+    user = await User.findById(req.userData.userId)
   } catch (error) {
     return next(new HttpError('Impossible de supprimer cet utilisateur', 500))
   }
@@ -118,6 +118,16 @@ const deleteUser = async (req, res, next) => {
       new HttpError("Vous n'êtes pas autorisé à réaliser cet action.", 401)
     )
   }
+
+  try {
+    await Invoice.deleteMany({ creator: req.userData.userId })
+    await Customer.deleteMany({ creator: req.userData.userId })
+    await user.remove()
+  } catch (err) {
+    return next(new HttpError('Impossible de supprimer cet utilisateur', 500))
+  }
+
+  res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
 }
 
 const signup = async (req, res, next) => {
@@ -161,7 +171,7 @@ const signup = async (req, res, next) => {
     )
   }
 
-  res.status(201).json({ user: createdUser })
+  res.status(201).json({ message: "L'utilisateur a bien été créé" })
 }
 
 const login = async (req, res, next) => {

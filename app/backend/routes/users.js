@@ -38,6 +38,6 @@ router.patch(
   ],
   usersController.updateUser
 )
-router.delete('/:userId', usersController.deleteUser)
+router.delete('/', usersController.deleteUser)
 
 module.exports = router

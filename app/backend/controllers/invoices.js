@@ -188,7 +188,40 @@ const updateInvoice = async (req, res, next) => {
   res.status(200).json({ invoice: invoice.toObject({ getters: true }) })
 }
 
-const deleteInvoice = async (req, res, next) => {}
+const deleteInvoice = async (req, res, next) => {
+  const { invoiceId } = req.params
+
+  let invoice
+  try {
+    invoice = await Invoice.findById(invoiceId).populate('creator')
+  } catch (err) {
+    return next(new HttpError('Impossible de supprimer cette facture', 500))
+  }
+
+  if (!invoice) {
+    return next(new HttpError('Impossible de supprimer cette facture', 500))
+  }
+
+  if (invoice.creator.id !== req.userData.userId) {
+    return next(
+      new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
+    )
+  }
+
+  try {
+    const session = await mongoose.startSession()
+
+    session.startTransaction()
+    await invoice.remove({ session })
+    invoice.creator.invoices.pull(invoice)
+    await invoice.creator.save({ session })
+    await session.commitTransaction()
+  } catch (err) {
+    return next(new HttpError('Impossible de supprimer cette facture', 500))
+  }
+
+  res.status(200).json({ message: 'La facture a bien été supprimée' })
+}
 
 exports.getInvoices = getInvoices
 exports.getInvoice = getInvoice

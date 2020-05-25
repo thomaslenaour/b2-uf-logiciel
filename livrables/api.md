@@ -8,7 +8,7 @@
 
 - 🔐✅ **GET** /:userId => Un utilisateur en fonction de l'ID
 - 🔐✅ **PATCH** /:userId => Modifier un utilisateur
-- **DELETE** /:userId => Supprimer un utilisateur
+- 🔐✅ **DELETE** /:userId => Supprimer un utilisateur
 - ✅ **POST** /signup => Inscription (créer un utilisateur)
 - ✅ **POST** /login => Connexion (connecter un utilisateur)
 
@@ -17,7 +17,7 @@
 - 🔐✅ **GET** / => Tous clients d'un utilisateur
 - 🔐✅ **GET** /:customerId => Un client en fonction de l'ID
 - 🔐✅ **PATCH** /:customerId => Modifier un client
-- 🔐 **DELETE** /:customerId => Supprimer un client
+- 🔐✅ **DELETE** /:customerId => Supprimer un client
 - 🔐✅ **POST** / => Créer un client
 
 ## /api/invoices
@@ -25,7 +25,7 @@
 - 🔐✅ **GET** / => Toutes les factures d'un utilisateur
 - 🔐✅ **GET** /:invoiceId => Une facture en fonction de l'ID
 - 🔐✅ **PATCH** /:invoiceId => Modifier une facture
-- 🔐 **DELETE** /:invoiceId => Supprimer une facture
+- 🔐✅ **DELETE** /:invoiceId => Supprimer une facture
 - 🔐✅ **POST** /:customerId => Créer une facture
 
 # Exemples de requêtes
