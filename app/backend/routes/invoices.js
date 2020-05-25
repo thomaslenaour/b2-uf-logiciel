@@ -9,12 +9,12 @@ const router = express.Router()
 // /api/invoices
 router.use(checkAuth)
 
-router.get('/user/:userId', invoicesController.getInvoices)
+router.get('/', invoicesController.getInvoices)
 router.get('/:invoiceId', invoicesController.getInvoice)
 router.patch('/:invoiceId', invoicesController.updateInvoice)
 router.delete('/:invoiceId', invoicesController.deleteInvoice)
 router.post(
-  '/',
+  '/:customerId',
   [
     check('category').not().isEmpty(),
     check('amount').isNumeric(),

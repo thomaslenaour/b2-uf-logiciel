@@ -10,7 +10,8 @@ const invoiceSchema = new Schema({
   is_paid: { type: Boolean, required: true },
   created_at: { type: Number, required: true },
   updated_at: { type: Number },
-  customer: { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }
+  customer: { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' },
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 })
 
 module.exports = mongoose.model('Invoice', invoiceSchema)

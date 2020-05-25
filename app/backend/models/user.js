@@ -12,7 +12,8 @@ const userSchema = Schema({
   updated_at: { type: Number },
   customers: [
     { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }
-  ]
+  ],
+  invoices: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Invoice' }]
 })
 
 userSchema.plugin(uniqueValidator)

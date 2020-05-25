@@ -82,8 +82,7 @@ const createCustomer = async (req, res, next) => {
     country,
     phone,
     creator: req.userData.userId,
-    created_at: new Date().getTime(),
-    invoices: []
+    created_at: new Date().getTime()
   })
 
   let user
