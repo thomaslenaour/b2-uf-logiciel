@@ -22,11 +22,11 @@
 
 ## /api/invoices
 
-- 🔐 **GET** /user/:userId => Toutes les feactures d'un utilisateur
+- 🔐 **GET** / => Toutes les feactures d'un utilisateur
 - 🔐 **GET** /:invoiceId => Une facture en fonction de l'ID
 - 🔐 **PATCH** /:invoiceId => Modifier une facture
 - 🔐 **DELETE** /:invoiceId => Supprimer une facture
-- 🔐✅ **POST** / => Créer une facture
+- 🔐✅ **POST** /:customerId => Créer une facture
 
 # Exemples de requêtes
 
