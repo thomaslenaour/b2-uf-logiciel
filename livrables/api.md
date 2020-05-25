@@ -24,7 +24,7 @@
 
 - 🔐✅ **GET** / => Toutes les factures d'un utilisateur
 - 🔐✅ **GET** /:invoiceId => Une facture en fonction de l'ID
-- 🔐 **PATCH** /:invoiceId => Modifier une facture
+- 🔐✅ **PATCH** /:invoiceId => Modifier une facture
 - 🔐 **DELETE** /:invoiceId => Supprimer une facture
 - 🔐✅ **POST** /:customerId => Créer une facture
 
