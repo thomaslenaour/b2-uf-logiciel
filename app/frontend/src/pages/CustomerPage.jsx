@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import CustomersAPI from '../services/CustomersAPI'
 import Field from '../components/Field'
 
-const CustomerPage = ({ match }) => {
+const CustomerPage = ({ match, history }) => {
   const { id = 'new' } = match.params
-
+  const [customerName, setCustomerName] = useState('')
   const [customer, setCustomer] = useState({
     name: '',
     address: '',
@@ -20,18 +21,20 @@ const CustomerPage = ({ match }) => {
   // Récupération du client en fonction de l'identifiant
   const fetchCustomer = async id => {
     try {
-      const {
-        name,
-        address,
-        postalCode,
-        city,
-        country,
-        phone
-      } = await CustomersAPI.find(id)
-      setCustomer({ name, address, postalCode, city, country, phone })
+      const data = await CustomersAPI.findById(id).then(
+        response => response.data.customer
+      )
+      setCustomerName(data.name)
+      setCustomer({
+        name: data.name,
+        address: data.address,
+        postalCode: data.postal_code,
+        city: data.city,
+        country: data.country,
+        phone: data.phone
+      })
     } catch (error) {
-      console.log(error.response)
-      // TODO ERROR
+      toast.error('Une erreur est survenue ❌')
     }
   }
 
@@ -52,7 +55,19 @@ const CustomerPage = ({ match }) => {
 
   const handleSubmit = async event => {
     event.preventDefault()
-    console.log(customer)
+
+    try {
+      if (editing) {
+        await CustomersAPI.update(id, customer)
+        toast.success('Le client a été modifié ✅')
+      } else {
+        await CustomersAPI.create(customer)
+        toast.success('Le client a été crée ✅')
+      }
+      history.push('/customers')
+    } catch (error) {
+      console.log(error.response)
+    }
   }
 
   return (
@@ -61,8 +76,8 @@ const CustomerPage = ({ match }) => {
         <h1 className="text-center my-5 display-3">Création d'un client</h1>
       )) || (
         <h1 className="text-center my-5 display-3">
-          Modification du client numéro
-          {id}
+          Modification du client
+          {` ${customerName}`}
         </h1>
       )}
       <div className="container">

@@ -6,6 +6,8 @@ import {
   Route,
   withRouter
 } from 'react-router-dom'
+import Axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
 import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
@@ -15,9 +17,11 @@ import InvoicesPage from './pages/InvoicesPage'
 import CustomerPage from './pages/CustomerPage'
 import InvoicePage from './pages/InvoicePage'
 import AuthContext from './context/auth'
+import 'react-toastify/dist/ReactToastify.css'
 import AuthAPI from './services/AuthAPI'
 
 const Store = window.require('electron-store')
+AuthAPI.setup()
 
 const App = () => {
   const store = new Store()
@@ -71,6 +75,7 @@ const App = () => {
         <NavbarWithRouter />
         <main>{routes}</main>
       </Router>
+      <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
     </AuthContext.Provider>
   )
 }

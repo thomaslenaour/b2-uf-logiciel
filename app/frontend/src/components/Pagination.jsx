@@ -9,9 +9,9 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
   }
 
   return (
-    <div>
-      <ul className="pagination pagination-sm">
-        <li className={'page-item' + (currentPage === 1 && ' disabled')}>
+    <div className="">
+      <ul className="pagination pagination-sm d-flex justify-content-center">
+        <li className={`page-item${currentPage === 1 && ' disabled'}`}>
           <button
             className="page-link"
             onClick={() => onPageChanged(currentPage - 1)}
@@ -22,16 +22,14 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
         {pages.map(page => (
           <li
             key={page}
-            className={'page-item' + (currentPage === page && ' active')}
+            className={`page-item${currentPage === page && ' active'}`}
           >
             <a onClick={() => onPageChanged(page)} className="page-link">
               {page}
             </a>
           </li>
         ))}
-        <li
-          className={'page-item' + (currentPage === pagesCount && ' disabled')}
-        >
+        <li className={`page-item${currentPage === pagesCount && ' disabled'}`}>
           <button
             className="page-link"
             onClick={() => onPageChanged(currentPage + 1)}

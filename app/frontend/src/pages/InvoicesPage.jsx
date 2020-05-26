@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Pagination from '../components/Pagination'
+import InvoicesAPI from '../services/InvoicesAPI'
 
 const InvoicesPage = () => {
   const [invoices, setInvoices] = useState([])
@@ -12,10 +13,12 @@ const InvoicesPage = () => {
   // Permet d'aller récupérer les factures
   const fetchInvoices = async () => {
     try {
-      console.log('Récupération des factures')
-      // const data = await InvoicesAPI.findAll()
-      // setInvoices(data)
+      const data = await InvoicesAPI.findAll().then(
+        response => response.data.invoices
+      )
+      setInvoices(data)
     } catch (error) {
+      console.log(error.response)
       // TODO ERROR TOAST
     }
   }
@@ -101,23 +104,25 @@ const InvoicesPage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Thomas le Naour</td>
-            <td>WordPress</td>
-            <td>1000€</td>
-            <td>Payé</td>
-            <td>Lien vers pdf ?</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-            </td>
-          </tr>
+          {paginatedInvoices.map(invoice => (
+            <tr>
+              <td>1</td>
+              <td>Thomas le Naour</td>
+              <td>WordPress</td>
+              <td>1000€</td>
+              <td>Payé</td>
+              <td>Lien vers pdf ?</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => handleDelete()}
+                >
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          ))}
           <tr>
             <td>1</td>
             <td>Thomas le Naour</td>
