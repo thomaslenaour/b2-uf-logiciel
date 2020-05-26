@@ -6,7 +6,6 @@ import AuthContext from '../context/auth'
 const InvoicesPage = () => {
   const auth = useContext(AuthContext)
   auth.logout()
-  console.log('logout')
 
   const [invoices, setInvoices] = useState([])
   const [search, setSearch] = useState('')

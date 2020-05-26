@@ -6,7 +6,6 @@ import AuthContext from '../context/auth'
 const CustomersPage = () => {
   const auth = useContext(AuthContext)
   auth.login(18, 'test')
-  console.log('login')
 
   const [customers, setCustomers] = useState([])
   const [search, setSearch] = useState('')

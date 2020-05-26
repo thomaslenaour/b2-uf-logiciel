@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
@@ -15,17 +15,24 @@ const Store = window.require('electron-store')
 
 const App = () => {
   const store = new Store()
-  const token = store.get('token')
-  const userId = store.get('userId')
+
+  const [token, setToken] = useState(store.get('token'))
+  const [userId, setUserId] = useState(store.get('userId'))
 
   const login = useCallback((userId, token) => {
     store.set('token', token)
     store.set('userId', userId)
+
+    setToken(token)
+    setUserId(userId)
   }, [])
 
   const logout = useCallback(() => {
     store.delete('token')
     store.delete('userId')
+
+    setToken(null)
+    setUserId(null)
   }, [])
 
   let routes
