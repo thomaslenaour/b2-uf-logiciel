@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Pagination from '../components/Pagination'
-import AuthContext from '../context/auth'
 
 const CustomersPage = () => {
-  const auth = useContext(AuthContext)
-  auth.login(18, 'test')
-
   const [customers, setCustomers] = useState([])
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
