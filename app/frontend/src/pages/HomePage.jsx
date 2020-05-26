@@ -3,12 +3,9 @@ import { Link } from 'react-router-dom'
 import Store from '../services/Store'
 
 const HomePage = () => {
-  console.log(Store.get('unicorn'))
   return (
     <>
-      <h1 className="display-3 text-center my-5">
-        Ynov CRM {Store.get('unicorn')}
-      </h1>
+      <h1 className="display-3 text-center my-5"> </h1>
       <div className="row pt-5">
         <div className="col-6 text-center">
           <img

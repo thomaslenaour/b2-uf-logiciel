@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
@@ -10,26 +10,18 @@ import InvoicesPage from './pages/InvoicesPage'
 import CustomerPage from './pages/CustomerPage'
 import InvoicePage from './pages/InvoicePage'
 import AuthContext from './context/auth'
+import AuthAPI from './services/AuthAPI'
 
 const Store = window.require('electron-store')
 
 const App = () => {
-  const store = new Store()
-  const token = store.get('token')
-  const userId = store.get('userId')
-
-  const login = useCallback((userId, token) => {
-    store.set('token', token)
-    store.set('userId', userId)
-  }, [])
-
-  const logout = useCallback(() => {
-    store.delete('token')
-    store.delete('userId')
-  }, [])
+  // Il faudrait demander à notre AuthAPI si on est déjà connecté ou pas
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    AuthAPI.isAuthenticated()
+  )
 
   let routes
-  if (token) {
+  if (isAuthenticated) {
     routes = (
       <Switch>
         {/* <Route exact path="/" component={HomePage} /> */}
@@ -56,9 +48,7 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn: !!token, token, userId, login, logout }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
       <Router>
         <Navbar />
         <main>{routes}</main>

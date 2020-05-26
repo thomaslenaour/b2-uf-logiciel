@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Field from '../components/Field'
 import AuthAPI from '../services/AuthAPI'
 
-const LoginPage = () => {
+const LoginPage = ({ history }) => {
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -23,8 +23,8 @@ const LoginPage = () => {
     try {
       console.log(credentials)
       const data = await AuthAPI.authenticate(credentials)
-      console.log(data.data.token)
       setErrorLogin('d-none')
+      history.push('/')
       // TODO SUCCESS TOAST
     } catch (error) {
       setErrorLogin('')
