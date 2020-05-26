@@ -1,6 +1,7 @@
 import Axios from 'axios'
 
 function findAll() {
+  console.log(Axios.defaults.headers.Authorization)
   return Axios.get('http://localhost:5000/api/customers')
 }
 
@@ -12,13 +13,18 @@ function update(id, data) {
   return Axios.patch(`http://localhost:5000/api/customers/${id}`, data)
 }
 
-function create() {
-  return Axios.post('http://localhost:5000/api/customers')
+function create(data) {
+  return Axios.post('http://localhost:5000/api/customers', data)
+}
+
+function remove(id) {
+  return Axios.delete(`http://localhost:5000/api/customers/${id}`)
 }
 
 export default {
   findAll,
   findById,
   create,
-  update
+  update,
+  remove
 }

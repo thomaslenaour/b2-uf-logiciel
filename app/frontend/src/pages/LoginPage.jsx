@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-
+import { toast } from 'react-toastify'
 import Field from '../components/Field'
 import AuthAPI from '../services/AuthAPI'
 import AuthContext from '../context/auth'
@@ -28,11 +28,11 @@ const LoginPage = ({ history }) => {
       const data = await AuthAPI.authenticate(credentials)
       setErrorLogin('d-none')
       auth.login(data.userId, data.token)
+      toast.success('Vous êtes désormais connecté ✅')
       history.push('/')
-      // TODO SUCCESS TOAST
     } catch (error) {
       setErrorLogin('')
-      // TODO ERROR TOAST
+      toast.error('Une erreur est survenue ❌')
     }
   }
 

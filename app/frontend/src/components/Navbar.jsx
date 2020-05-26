@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import AuthContext from '../context/auth'
 
@@ -8,6 +9,7 @@ const Navbar = ({ history }) => {
 
   const handleLogout = () => {
     auth.logout()
+    toast.success('Vous êtes désormais déconnecté ✅')
     history.push('/')
   }
 

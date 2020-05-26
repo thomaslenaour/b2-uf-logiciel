@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import Pagination from '../components/Pagination'
+import CustomersAPI from '../services/CustomersAPI'
 
 const CustomersPage = () => {
   const [customers, setCustomers] = useState([])
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
 
-  const itemsPerPage = 10
+  const itemsPerPage = 7
 
   // Permet d'aller récupérer les customers
   const fetchCustomers = async () => {
     try {
-      console.log('Récupération des customers')
-      // const data = await CustomersAPI.findAll()
-      // setCustomers(data)
+      const data = await CustomersAPI.findAll().then(
+        response => response.data.customers
+      )
+      setCustomers(data)
     } catch (error) {
-      // TODO ERROR TOAST
+      toast.error('Une erreur est survenue ❌')
     }
   }
 
@@ -50,16 +53,16 @@ const CustomersPage = () => {
 
   // Gestion de la supression d'un client
   const handleDelete = async id => {
-    // const originalCustomers = [...customers];
+    const originalCustomers = [...customers]
 
-    // setCustomers(customers.filter(customer => customer.id !== id));
+    setCustomers(customers.filter(customer => customer.id !== id))
 
     try {
-      // await CustomersAPI.remove(id)
-      // TODO SUCCESS TOAST
+      await CustomersAPI.remove(id)
+      toast.success('Le client a été supprimé ✅')
     } catch (error) {
-      // setCustomers(originalCustomers)
-      // TODO ERROR TOAST
+      setCustomers(originalCustomers)
+      toast.error('Une erreur est survenue ❌')
     }
   }
 
@@ -89,136 +92,37 @@ const CustomersPage = () => {
       <table className="table table-hover mt-5">
         <thead>
           <tr>
-            <th>#</th>
             <th>Client</th>
-            <th>Email</th>
+            <th>Téléphone</th>
             <th>Ville</th>
-            <th className="text-center">Factures</th>
-            <th className="text-center">Montant total</th>
-            <th>Actions</th>
+            <th className="text-center">Code Postal</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Thomas le Naour</td>
-            <td>thomas@thomas.com</td>
-            <td>Bordeaux</td>
-            <td className="text-center">4</td>
-            <td className="text-center">3600€</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ml-2"
-                onClick={() => handleDelete()}
-              >
-                Modifier
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Thomas le Naour</td>
-            <td>thomas@thomas.com</td>
-            <td>Bordeaux</td>
-            <td className="text-center">4</td>
-            <td className="text-center">3600€</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ml-2"
-                onClick={() => handleDelete()}
-              >
-                Modifier
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Thomas le Naour</td>
-            <td>thomas@thomas.com</td>
-            <td>Bordeaux</td>
-            <td className="text-center">4</td>
-            <td className="text-center">3600€</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ml-2"
-                onClick={() => handleDelete()}
-              >
-                Modifier
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Thomas le Naour</td>
-            <td>thomas@thomas.com</td>
-            <td>Bordeaux</td>
-            <td className="text-center">4</td>
-            <td className="text-center">3600€</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ml-2"
-                onClick={() => handleDelete()}
-              >
-                Modifier
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Thomas le Naour</td>
-            <td>thomas@thomas.com</td>
-            <td>Bordeaux</td>
-            <td className="text-center">4</td>
-            <td className="text-center">3600€</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ml-2"
-                onClick={() => handleDelete()}
-              >
-                Modifier
-              </button>
-            </td>
-          </tr>
+          {paginatedCustomers.map(customer => (
+            <tr key={customer.id}>
+              <td>{customer.name}</td>
+              <td>{customer.phone}</td>
+              <td>{customer.city}</td>
+              <td className="text-center">{customer.postal_code}</td>
+              <td className="text-center">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => handleDelete(customer.id)}
+                >
+                  Supprimer
+                </button>
+                <Link
+                  to={`/customers/${customer.id}`}
+                  className="btn btn-sm btn-primary ml-2"
+                >
+                  Modifier
+                </Link>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
