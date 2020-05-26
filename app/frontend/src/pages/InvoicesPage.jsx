@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import Pagination from '../components/Pagination'
-import AuthAPI from '../services/AuthAPI'
+import AuthContext from '../context/auth'
 
 const InvoicesPage = () => {
-  AuthAPI.logout()
+  const auth = useContext(AuthContext)
+  auth.logout()
 
   const [invoices, setInvoices] = useState([])
   const [search, setSearch] = useState('')

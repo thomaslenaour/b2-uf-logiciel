@@ -15,13 +15,29 @@ import AuthAPI from './services/AuthAPI'
 const Store = window.require('electron-store')
 
 const App = () => {
-  // Il faudrait demander à notre AuthAPI si on est déjà connecté ou pas
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    AuthAPI.isAuthenticated()
-  )
+  const store = new Store()
+
+  const [token, setToken] = useState(store.get('token'))
+  const [userId, setUserId] = useState(store.get('userId'))
+
+  const login = useCallback((userId, token) => {
+    store.set('token', token)
+    store.set('userId', userId)
+
+    setToken(token)
+    setUserId(userId)
+  }, [])
+
+  const logout = useCallback(() => {
+    store.delete('token')
+    store.delete('userId')
+
+    setToken(null)
+    setUserId(null)
+  }, [])
 
   let routes
-  if (isAuthenticated) {
+  if (token) {
     routes = (
       <Switch>
         {/* <Route exact path="/" component={HomePage} /> */}
@@ -48,7 +64,9 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!token, token, userId, login, logout }}
+    >
       <Router>
         <Navbar />
         <main>{routes}</main>
