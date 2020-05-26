@@ -32,7 +32,7 @@ const App = () => {
 
     setToken(token)
     setUserId(userId)
-  }, [])
+  })
 
   const logout = useCallback(() => {
     store.delete('token')
@@ -40,7 +40,7 @@ const App = () => {
 
     setToken(null)
     setUserId(null)
-  }, [])
+  })
 
   let routes
   if (token) {
