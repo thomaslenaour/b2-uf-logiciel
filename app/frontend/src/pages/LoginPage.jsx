@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
+
 import Field from '../components/Field'
 import AuthAPI from '../services/AuthAPI'
+import AuthContext from '../context/auth'
 
 const LoginPage = ({ history }) => {
+  const auth = useContext(AuthContext)
+
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -21,9 +25,9 @@ const LoginPage = ({ history }) => {
     event.preventDefault()
 
     try {
-      console.log(credentials)
       const data = await AuthAPI.authenticate(credentials)
       setErrorLogin('d-none')
+      auth.login(data.userId, data.token)
       history.push('/')
       // TODO SUCCESS TOAST
     } catch (error) {

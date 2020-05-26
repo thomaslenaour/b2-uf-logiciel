@@ -1,6 +1,11 @@
-import React, { useCallback, useEffect, useContext, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter
+} from 'react-router-dom'
 import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
@@ -16,6 +21,7 @@ const Store = window.require('electron-store')
 
 const App = () => {
   const store = new Store()
+  const NavbarWithRouter = withRouter(Navbar)
 
   const [token, setToken] = useState(store.get('token'))
   const [userId, setUserId] = useState(store.get('userId'))
@@ -40,9 +46,7 @@ const App = () => {
   if (token) {
     routes = (
       <Switch>
-        {/* <Route exact path="/" component={HomePage} /> */}
-        <Route exact path="/register" component={RegisterPage} />
-        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/" component={HomePage} />
         <Route exact path="/customers" component={CustomersPage} />
         <Route exact path="/invoices" component={InvoicesPage} />
         <Route exact path="/customers/:id" component={CustomerPage} />
@@ -55,10 +59,6 @@ const App = () => {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/customers" component={CustomersPage} />
-        <Route exact path="/invoices" component={InvoicesPage} />
-        <Route exact path="/customers/:id" component={CustomerPage} />
-        <Route exact path="/invoices/:id" component={InvoicePage} />
       </Switch>
     )
   }
@@ -68,7 +68,7 @@ const App = () => {
       value={{ isLoggedIn: !!token, token, userId, login, logout }}
     >
       <Router>
-        <Navbar />
+        <NavbarWithRouter />
         <main>{routes}</main>
       </Router>
     </AuthContext.Provider>

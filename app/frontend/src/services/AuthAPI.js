@@ -16,12 +16,9 @@ function setAxiosToken(token) {
 }
 
 function authenticate(credentials) {
-  return Axios.post('http://localhost:5000/api/users/login', credentials)
-    .then(response => response.data)
-    .then(response => {
-      store.set('userId', response.userId)
-      store.set('token', response.token)
-    })
+  return Axios.post('http://localhost:5000/api/users/login', credentials).then(
+    response => response.data
+  )
 }
 
 function isAuthenticated() {

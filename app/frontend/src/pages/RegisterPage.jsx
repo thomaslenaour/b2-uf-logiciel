@@ -28,6 +28,7 @@ const RegisterPage = ({ history }) => {
       if (credentials.passwordConfirmation === credentials.password) {
         await UsersAPI.createUser(credentials)
         setErrorRegistration('d-none')
+        history.push('/login')
       } else {
         setErrorRegistration('')
         console.log('mdp inccorect')
