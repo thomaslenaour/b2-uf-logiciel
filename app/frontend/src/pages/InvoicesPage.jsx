@@ -54,15 +54,15 @@ const InvoicesPage = () => {
 
   // Gestion de la supression d'une facture
   const handleDelete = async id => {
-    // const originalInvoices = [...invoices];
+    const originalInvoices = [...invoices]
 
-    // setInvoices(invoices.filter(invoice => invoice.id !== id));
+    setInvoices(invoices.filter(invoice => invoice.id !== id))
 
     try {
-      // await InvoiceAPI.remove(id)
+      await InvoicesAPI.remove(id)
       // TODO SUCCESS TOAST
     } catch (error) {
-      // setInvoice(originalInvoices
+      setInvoices(originalInvoices)
       // TODO ERROR TOAST
     }
   }
@@ -96,7 +96,7 @@ const InvoicesPage = () => {
           <tr>
             <th>#</th>
             <th>Client</th>
-            <th>Category</th>
+            <th>Categorie</th>
             <th>Amount</th>
             <th>Status</th>
             <th>PDF</th>
@@ -105,75 +105,33 @@ const InvoicesPage = () => {
         </thead>
         <tbody>
           {paginatedInvoices.map(invoice => (
-            <tr>
-              <td>1</td>
-              <td>Thomas le Naour</td>
-              <td>WordPress</td>
-              <td>1000€</td>
-              <td>Payé</td>
-              <td>Lien vers pdf ?</td>
+            <tr key={invoice.id}>
+              <td>{invoice.reference}</td>
+              <td>Nom & Prénom</td>
+              <td>{invoice.category}</td>
+              <td>{invoice.amount} €</td>
+              <td>
+                {(invoice.is_paid && 'Payée') ||
+                  (!invoice.is_paid && 'En cours')}
+              </td>
+              <td>{invoice.invoice_pdf}</td>
               <td>
                 <button
                   type="button"
                   className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete()}
+                  onClick={() => handleDelete(invoice.id)}
                 >
                   Supprimer
                 </button>
+                <Link
+                  to={`/invoices/${invoice.id}`}
+                  className="btn btn-sm btn-primary ml-2"
+                >
+                  Modifier
+                </Link>
               </td>
             </tr>
           ))}
-          <tr>
-            <td>1</td>
-            <td>Thomas le Naour</td>
-            <td>WordPress</td>
-            <td>1000€</td>
-            <td>Payé</td>
-            <td>Lien vers pdf ?</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Thomas le Naour</td>
-            <td>WordPress</td>
-            <td>1000€</td>
-            <td>Payé</td>
-            <td>Lien vers pdf ?</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Thomas le Naour</td>
-            <td>WordPress</td>
-            <td>1000€</td>
-            <td>Payé</td>
-            <td>Lien vers pdf ?</td>
-            <td>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleDelete()}
-              >
-                Supprimer
-              </button>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>

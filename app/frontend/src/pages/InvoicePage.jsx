@@ -10,47 +10,59 @@ const InvoicePage = ({ match }) => {
   const [editing, setEditing] = useState(false)
   const [invoice, setInvoice] = useState({
     category: '',
+    amount: '',
     isPaid: '',
     customerId: '',
-    status: 'PAID'
+    invoicePdf: ''
   })
-  const [customers, setCustomers] = useState([
-    { name: 'Alex Boisseau', id: '111' },
-    { name: 'Baptiste Boisseau', id: '222' }
-  ])
+  const [customers, setCustomers] = useState([])
+
+  const fetchInvoice = async id => {
+    try {
+      const data = await InvoicesAPI.findById(id).then(
+        response => response.data.invoice
+      )
+      if (data.is_paid === true) {
+        data.is_paid = '1'
+      } else {
+        data.is_paid = '0'
+      }
+      setInvoice({
+        category: data.category,
+        amount: data.amount,
+        isPaid: data.is_paid,
+        customerId: data.customer,
+        invoicePdf: data.invoice_pdf
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const fetchCustomers = async () => {
     try {
-      const data = await CustomersAPI.findAll()
+      const data = await CustomersAPI.findAll().then(
+        response => response.data.customers
+      )
       setCustomers(data)
-      if (!invoice.customerId)
+      if (!invoice.customerId && id === 'new')
         setInvoice({ ...invoice, customerId: data[0].id })
     } catch (error) {
       console.log(error)
     }
   }
 
-  const fetchInvoice = async id => {
-    try {
-      const { category, amount, status, customer } = await InvoicesAPI.find(id)
-      setInvoice({ category, amount, status, customer: customer.id })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // Récupération des clients quand la page change
-  useEffect(() => {
-    fetchCustomers()
-  }, [])
-
   // Récupération de la bonne facture quand l'id change
   useEffect(() => {
     if (id !== 'new') {
-      fetchInvoice(id)
       setEditing(true)
+      fetchInvoice(id)
     }
   }, [id])
+
+  useEffect(() => {
+    fetchCustomers()
+  }, [])
 
   // Gestion des changements des input dans le formulaire
   const handleChange = ({ currentTarget }) => {
@@ -63,10 +75,9 @@ const InvoicePage = ({ match }) => {
     event.preventDefault()
     try {
       if (editing) {
-        // await InvoicesAPI.update(id, invoice)
+        await InvoicesAPI.update(id, invoice)
       } else {
-        // await InvoicesAPI.create(invoice)
-        console.log(invoice)
+        await InvoicesAPI.create(invoice)
       }
     } catch (error) {
       console.log(error)
@@ -91,9 +102,15 @@ const InvoicePage = ({ match }) => {
             onChange={handleChange}
           />
           <Field
-            name="isPaid"
+            name="amount"
             label="Montant"
-            value={invoice.isPaid}
+            value={invoice.amount}
+            onChange={handleChange}
+          />
+          <Field
+            name="invoicePdf"
+            label="PDF de la facture"
+            value={invoice.invoicePdf}
             onChange={handleChange}
           />
           <Select
@@ -109,13 +126,13 @@ const InvoicePage = ({ match }) => {
             ))}
           </Select>
           <Select
-            name="status"
+            name="isPaid"
             label="Statut"
-            value={invoice.status}
+            value={invoice.isPaid}
             onChange={handleChange}
           >
-            <option value="PAID">Payée</option>
-            <option value="WAIT">En cours</option>
+            <option value="1">Payée</option>
+            <option value="0">En cours</option>
           </Select>
           <div className="form-group">
             <button type="submit" className="btn btn-primary">

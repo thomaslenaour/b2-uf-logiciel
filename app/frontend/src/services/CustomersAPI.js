@@ -1,7 +1,6 @@
 import Axios from 'axios'
 
 function findAll() {
-  console.log(Axios.defaults.headers.Authorization)
   return Axios.get('http://localhost:5000/api/customers')
 }
 

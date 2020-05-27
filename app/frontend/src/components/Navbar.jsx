@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import AuthContext from '../context/auth'
