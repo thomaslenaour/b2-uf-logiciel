@@ -6,7 +6,6 @@ import {
   Route,
   withRouter
 } from 'react-router-dom'
-import Axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'

@@ -1,14 +1,81 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Line, Doughnut } from 'react-chartjs-2'
+import { Line, Doughnut, Pie } from 'react-chartjs-2'
+import { toast } from 'react-toastify'
+import CustomersAPI from '../services/CustomersAPI'
+import InvoiceAPI from '../services/InvoicesAPI'
 
 import AuthContext from '../context/auth'
 
+const colors = [
+  'rgb(233,90,90)',
+  'rgb(64,168,246)',
+  'rgb(236, 201, 75)',
+  'rgb(72, 187, 120)',
+  'rgb(102, 126, 234)',
+  'rgb(159, 122, 234)',
+  'rgb(237, 100, 166)',
+  'rgb(237, 137, 54)'
+]
+
 const HomePage = () => {
   const auth = useContext(AuthContext)
+  const [customers, setCustomers] = useState([])
+  const [invoices, setInvoices] = useState([])
 
-  const caData = [300, 766, 400, 769, 890, 554, 256, 588, 898, 488, 340, 1054]
+  const fetchData = async () => {
+    try {
+      const customersData = await CustomersAPI.findAll().then(
+        response => response.data.customers
+      )
+      setCustomers(customersData)
+      const invoicesData = await InvoiceAPI.findAll().then(
+        response => response.data.invoices
+      )
+      setInvoices(invoicesData)
+    } catch (error) {
+      toast.error('Une erreur est survenue ❌')
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const caTotal = invoices
+    .map(invoice => +invoice.amount)
+    .reduce((acc, currentVal) => acc + currentVal, 0)
+
+  const caMensuel = invoices
+    .map(invoice => {
+      if (new Date(invoice.created_at).getMonth() === new Date().getMonth()) {
+        return +invoice.amount
+      }
+      return 0
+    })
+    .reduce((acc, currentVal) => acc + currentVal, 0)
+
+  const cotisations = (caMensuel * 11) / 100
+
+  const caData = Array(12).fill(0)
+  invoices.forEach(invoice => {
+    const month = new Date(invoice.created_at).getMonth()
+    caData[month] += +invoice.amount
+  })
+
+  const labelCategories = invoices.map(invoice => invoice.category)
+  const categoriesColors = labelCategories.map((value, index) => colors[index])
+  const nbProjectsPerCategory = {}
+  invoices.forEach(invoice => {
+    if (!nbProjectsPerCategory[invoice.category]) {
+      nbProjectsPerCategory[invoice.category] = 1
+    } else {
+      nbProjectsPerCategory[invoice.category] += 1
+    }
+  })
+
+  const nbInvoicesPaid = invoices.map(invoice => invoice.is_paid)
 
   const chartCaData = {
     labels: [
@@ -64,7 +131,30 @@ const HomePage = () => {
     datasets: [
       {
         backgroundColor: ['rgb(64,168,246)', 'rgb(236, 201, 75)'],
-        data: [7, 13]
+        data: [customers.length, invoices.length]
+      }
+    ]
+  }
+
+  const chartCategoriesInvoices = {
+    labels: labelCategories,
+    datasets: [
+      {
+        backgroundColor: categoriesColors,
+        data: Object.values(nbProjectsPerCategory)
+      }
+    ]
+  }
+
+  const chartInvoicesStatus = {
+    labels: ['Payé', 'En attente'],
+    datasets: [
+      {
+        backgroundColor: ['rgb(72, 187, 120)', 'rgb(160, 174, 192)'],
+        data: [
+          nbInvoicesPaid.filter(invoice => invoice === true).length,
+          nbInvoicesPaid.filter(invoice => invoice === false).length
+        ]
       }
     ]
   }
@@ -77,7 +167,7 @@ const HomePage = () => {
             <div className="card p-2">
               <p className="h5 text-center">CA total</p>
               <p className="display-4 font-weight-light text-center">
-                1883 &euro;
+                {caTotal} &euro;
               </p>
             </div>
           </div>
@@ -85,7 +175,7 @@ const HomePage = () => {
             <div className="card p-2">
               <p className="h5 text-center">CA mensuel</p>
               <p className="display-4 font-weight-light text-center">
-                200 &euro;
+                {caMensuel} &euro;
               </p>
             </div>
           </div>
@@ -93,21 +183,43 @@ const HomePage = () => {
             <div className="card p-2">
               <p className="h5 text-center">Cotisations à payer ce mois-ci</p>
               <p className="display-4 font-weight-light text-center">
-                22 &euro;
+                {cotisations} &euro;
               </p>
             </div>
           </div>
         </div>
         <div className="row flex align-items-center">
-          <div className="col-8">
-            <h2 className="text-center h5">
-              Courbes représentants le CA & le bénéfice mensuel
-            </h2>
-            <Line data={chartCaData} />
-          </div>
+          <h2 className="text-center h5">
+            Courbes représentants le CA & le bénéfice mensuel
+          </h2>
+          <Line
+            data={chartCaData}
+            options={{ legend: { position: 'bottom' } }}
+          />
+        </div>
+        <div className="row flex align-items-center mt-5">
           <div className="col-4">
             <h2 className="text-center h5">Nb de clients / Nb de factures</h2>
-            <Doughnut data={chartCustomersClientsData} />
+            <Doughnut
+              data={chartCustomersClientsData}
+              options={{
+                legend: { position: 'bottom' }
+              }}
+            />
+          </div>
+          <div className="col-4">
+            <h2 className="text-center h5">Catégories des projets</h2>
+            <Pie
+              data={chartCategoriesInvoices}
+              options={{ legend: { display: false } }}
+            />
+          </div>
+          <div className="col-4">
+            <h2 className="text-center h5">Factures payés / en attente</h2>
+            <Doughnut
+              data={chartInvoicesStatus}
+              options={{ legend: { position: 'bottom' } }}
+            />
           </div>
         </div>
       </div>
