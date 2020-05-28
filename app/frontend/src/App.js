@@ -19,6 +19,7 @@ import AuthContext from './context/auth'
 import 'react-toastify/dist/ReactToastify.css'
 import AuthAPI from './services/AuthAPI'
 import './assets/styles/styles.css'
+import Footer from './components/Footer'
 
 const Store = window.require('electron-store')
 AuthAPI.setup()
@@ -74,6 +75,7 @@ const App = () => {
       <Router>
         <NavbarWithRouter />
         <main>{routes}</main>
+        <Footer />
       </Router>
       <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
     </AuthContext.Provider>

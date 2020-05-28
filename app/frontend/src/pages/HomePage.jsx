@@ -162,10 +162,7 @@ const HomePage = () => {
   if (auth.isLoggedIn) {
     return (
       <div className="container" id="dashboard">
-        <h2 className="display-2 text-center mb-5" id="dashboard_title">
-          Dashboard 📈
-        </h2>
-        <div className="row mb-5">
+        <div className="row" id="dashboard_cards">
           <div className="col-4">
             <div className="card p-2">
               <p className="h5 text-center">CA total</p>
@@ -191,7 +188,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="row flex align-items-center">
+        <div className="row flex align-items-center" id="dashboard_curves">
           <h2 className="text-center h5">
             Courbes représentants le CA & le bénéfice mensuel
           </h2>
@@ -200,7 +197,7 @@ const HomePage = () => {
             options={{ legend: { position: 'bottom' } }}
           />
         </div>
-        <div className="row flex align-items-center mt-5">
+        <div className="row flex align-items-center mt-5" id="dashboard_data">
           <div className="col-4">
             <h2 className="text-center h5">Nb de clients / Nb de factures</h2>
             <Doughnut

@@ -14,7 +14,7 @@ const Navbar = ({ history }) => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-5">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-4">
       <div className="container">
         <NavLink className="navbar-brand" to="/">
           Ynov CRM

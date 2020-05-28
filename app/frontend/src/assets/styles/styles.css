@@ -3,3 +3,9 @@
 #dashboard {
   margin-top: 80px;
 }
+
+#dashboard_cards,
+#dashboard_data,
+#dashboard_curves {
+  margin-bottom: 80px;
+}
