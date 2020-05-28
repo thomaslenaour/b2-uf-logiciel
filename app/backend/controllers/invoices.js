@@ -7,9 +7,12 @@ const User = require('../models/user')
 const HttpError = require('../models/http-error')
 
 const getInvoices = async (req, res, next) => {
-  let user
+  let invoices
   try {
-    user = await User.findById(req.userData.userId).populate('invoices')
+    invoices = await Invoice.find({ creator: req.userData.userId }).populate(
+      'creator',
+      '-password'
+    )
   } catch (err) {
     return next(
       new HttpError(
@@ -19,7 +22,7 @@ const getInvoices = async (req, res, next) => {
     )
   }
 
-  if (!user) {
+  if (!invoices) {
     return next(
       new HttpError(
         'Impossible de trouver un utilisateur associé à cet ID',
@@ -28,14 +31,20 @@ const getInvoices = async (req, res, next) => {
     )
   }
 
-  if (user.id !== req.userData.userId) {
+  const invoicesCreatorId = invoices.map(invoice => invoice.creator.id)
+
+  if (!invoicesCreatorId.every((val, i, arr) => val === arr[0])) {
+    return next(new HttpError('Problème lors de la requête', 404))
+  }
+
+  if (invoicesCreatorId[0] !== req.userData.userId) {
     return next(
       new HttpError("Vous n'êtes pas autorisé à réaliser cet action", 401)
     )
   }
 
   res.json({
-    invoices: user.invoices.map(invoice => invoice.toObject({ getters: true }))
+    invoices: invoices.map(invoice => invoice.toObject({ getters: true }))
   })
 }
 
