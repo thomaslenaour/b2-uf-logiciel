@@ -18,6 +18,7 @@ import InvoicePage from './pages/InvoicePage'
 import AuthContext from './context/auth'
 import 'react-toastify/dist/ReactToastify.css'
 import AuthAPI from './services/AuthAPI'
+import './assets/styles/styles.css'
 
 const Store = window.require('electron-store')
 AuthAPI.setup()
