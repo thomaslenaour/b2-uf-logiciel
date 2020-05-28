@@ -161,7 +161,10 @@ const HomePage = () => {
 
   if (auth.isLoggedIn) {
     return (
-      <div className="container my-5">
+      <div className="container" id="dashboard">
+        <h2 className="display-2 text-center mb-5" id="dashboard_title">
+          Dashboard 📈
+        </h2>
         <div className="row mb-5">
           <div className="col-4">
             <div className="card p-2">

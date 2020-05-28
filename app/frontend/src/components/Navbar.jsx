@@ -14,7 +14,7 @@ const Navbar = ({ history }) => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-4">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-5">
       <div className="container">
         <NavLink className="navbar-brand" to="/">
           Ynov CRM
@@ -59,7 +59,7 @@ const Navbar = ({ history }) => {
               <li className="nav-item">
                 <button
                   type="button"
-                  className="btn btn-light text-danger border-danger mx-2"
+                  className="btn btn-danger mx-2"
                   onClick={handleLogout}
                 >
                   Déconnexion

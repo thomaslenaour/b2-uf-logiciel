@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import CustomersAPI from '../services/CustomersAPI'
 import InvoicesAPI from '../services/InvoicesAPI'
 import Field from '../components/Field'
 import Select from '../components/Select'
 
-const InvoicePage = ({ match }) => {
+const InvoicePage = ({ match, history }) => {
   const { id = 'new' } = match.params
   const [editing, setEditing] = useState(false)
   const [invoice, setInvoice] = useState({
     category: '',
     amount: '',
-    isPaid: '',
+    isPaid: '1',
     customerId: '',
     invoicePdf: ''
   })
@@ -35,7 +36,10 @@ const InvoicePage = ({ match }) => {
         invoicePdf: data.invoice_pdf
       })
     } catch (error) {
-      console.log(error)
+      toast.error(
+        'Une erreur est survenue lors de la récupération de la facture ❌'
+      )
+      history.push('/invoices')
     }
   }
 
@@ -48,7 +52,10 @@ const InvoicePage = ({ match }) => {
       if (!invoice.customerId && id === 'new')
         setInvoice({ ...invoice, customerId: data[0].id })
     } catch (error) {
-      console.log(error)
+      toast.error(
+        'Une erreur est survenue lors de la récupération des clients ❌'
+      )
+      history.push('/invoices')
     }
   }
 
@@ -76,11 +83,15 @@ const InvoicePage = ({ match }) => {
     try {
       if (editing) {
         await InvoicesAPI.update(id, invoice)
+        toast.success('La facture a bien été modifiée ✅')
+        history.push('/invoices')
       } else {
         await InvoicesAPI.create(invoice)
+        toast.success('La facture a bien été créée ✅')
+        history.push('/invoices')
       }
     } catch (error) {
-      console.log(error)
+      toast.error('Une erreur est survenue, veuillez réessayer ❌')
     }
   }
 
