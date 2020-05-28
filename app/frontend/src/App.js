@@ -53,6 +53,11 @@ const App = () => {
     setCotisationPct(null)
   })
 
+  const handleChangeCotisation = newCotisation => {
+    store.set('cotisationPct', newCotisation)
+    setCotisationPct(newCotisation)
+  }
+
   let routes
   if (token) {
     routes = (
@@ -60,7 +65,13 @@ const App = () => {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/customers" component={CustomersPage} />
         <Route exact path="/invoices" component={InvoicesPage} />
-        <Route exact path="/account" component={AccountPage} />
+        <Route
+          exact
+          path="/account"
+          component={() => (
+            <AccountPage changeCotisation={handleChangeCotisation} />
+          )}
+        />
         <Route exact path="/customers/:id" component={CustomerPage} />
         <Route exact path="/invoices/:id" component={InvoicePage} />
       </Switch>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import UsersAPI from '../services/UsersAPI'
 import Field from '../components/Field'
 
 const Store = window.require('electron-store')
 
-const AccountPage = ({ history }) => {
+const AccountPage = withRouter(({ history, changeCotisation }) => {
   const store = new Store()
   const userId = store.get('userId')
   const [credentials, setCredentials] = useState({
@@ -45,10 +45,11 @@ const AccountPage = ({ history }) => {
 
     try {
       await UsersAPI.update(userId, credentials)
-      store.set(('cotisationPct', credentials.contributionPct))
+      changeCotisation(credentials.contributionPct)
       toast.success('Vos informations ont éte mises à jour ✅')
       history.push('/')
     } catch (error) {
+      console.log(error)
       toast.error('Une erreur est survenue ❌')
     }
   }
@@ -101,6 +102,6 @@ const AccountPage = ({ history }) => {
       </div>
     </>
   )
-}
+})
 
 export default AccountPage
