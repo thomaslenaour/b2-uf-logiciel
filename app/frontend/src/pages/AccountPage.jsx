@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallBack } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import UsersAPI from '../services/UsersAPI'
@@ -14,7 +14,7 @@ const AccountPage = withRouter(({ history, changeCotisation }) => {
     email: '',
     contributionPct: ''
   })
-  const fetchUser = useCallBack(async () => {
+  const fetchUser = async () => {
     try {
       const data = await UsersAPI.findById(userId).then(
         response => response.data.user
@@ -27,11 +27,11 @@ const AccountPage = withRouter(({ history, changeCotisation }) => {
     } catch (error) {
       console.log(error.response)
     }
-  })
+  }
 
   useEffect(() => {
     fetchUser()
-  }, [fetchUser])
+  }, [])
 
   // Gestion des champs
   const handleChange = ({ currentTarget }) => {
