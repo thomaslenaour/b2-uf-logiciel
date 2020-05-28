@@ -16,7 +16,8 @@ const colors = [
   'rgb(102, 126, 234)',
   'rgb(159, 122, 234)',
   'rgb(237, 100, 166)',
-  'rgb(237, 137, 54)'
+  'rgb(237, 137, 54)',
+  'rgb(160, 174, 192)'
 ]
 
 const HomePage = () => {
@@ -34,9 +35,7 @@ const HomePage = () => {
         response => response.data.invoices
       )
       setInvoices(invoicesData)
-    } catch (error) {
-      toast.error('Une erreur est survenue ❌')
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -64,7 +63,9 @@ const HomePage = () => {
     caData[month] += +invoice.amount
   })
 
-  const labelCategories = invoices.map(invoice => invoice.category)
+  const labelCategories = [
+    ...new Set(invoices.map(invoice => invoice.category))
+  ]
   const categoriesColors = labelCategories.map((value, index) => colors[index])
   const nbProjectsPerCategory = {}
   invoices.forEach(invoice => {
@@ -165,66 +166,80 @@ const HomePage = () => {
         <h2 className="display-2 text-center mb-5" id="dashboard_title">
           Dashboard 📈
         </h2>
-        <div className="row mb-5">
-          <div className="col-4">
-            <div className="card p-2">
-              <p className="h5 text-center">CA total</p>
-              <p className="display-4 font-weight-light text-center">
-                {caTotal} &euro;
-              </p>
+        {customers.length > 0 && invoices.length > 0 && (
+          <div>
+            <div className="row mb-5">
+              <div className="col-4">
+                <div className="card p-2">
+                  <p className="h5 text-center">CA total</p>
+                  <p className="display-4 font-weight-light text-center">
+                    {caTotal} &euro;
+                  </p>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="card p-2">
+                  <p className="h5 text-center">CA mensuel</p>
+                  <p className="display-4 font-weight-light text-center">
+                    {caMensuel} &euro;
+                  </p>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="card p-2">
+                  <p className="h5 text-center">
+                    Cotisations à payer ce mois-ci
+                  </p>
+                  <p className="display-4 font-weight-light text-center">
+                    {cotisations} &euro;
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="row flex align-items-center">
+              <h2 className="text-center h5">
+                Courbes représentants le CA & le bénéfice mensuel
+              </h2>
+              <Line
+                data={chartCaData}
+                options={{ legend: { position: 'bottom' } }}
+              />
+            </div>
+            <div className="row flex align-items-center mt-5">
+              <div className="col-4">
+                <h2 className="text-center h5">
+                  Nb de clients / Nb de factures
+                </h2>
+                <Doughnut
+                  data={chartCustomersClientsData}
+                  options={{
+                    legend: { position: 'bottom' }
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <h2 className="text-center h5">Catégories des projets</h2>
+                <Pie
+                  data={chartCategoriesInvoices}
+                  options={{ legend: { display: false } }}
+                />
+              </div>
+              <div className="col-4">
+                <h2 className="text-center h5">Factures payés / en attente</h2>
+                <Doughnut
+                  data={chartInvoicesStatus}
+                  options={{ legend: { position: 'bottom' } }}
+                />
+              </div>
             </div>
           </div>
-          <div className="col-4">
-            <div className="card p-2">
-              <p className="h5 text-center">CA mensuel</p>
-              <p className="display-4 font-weight-light text-center">
-                {caMensuel} &euro;
-              </p>
-            </div>
-          </div>
-          <div className="col-4">
-            <div className="card p-2">
-              <p className="h5 text-center">Cotisations à payer ce mois-ci</p>
-              <p className="display-4 font-weight-light text-center">
-                {cotisations} &euro;
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="row flex align-items-center">
-          <h2 className="text-center h5">
-            Courbes représentants le CA & le bénéfice mensuel
-          </h2>
-          <Line
-            data={chartCaData}
-            options={{ legend: { position: 'bottom' } }}
-          />
-        </div>
-        <div className="row flex align-items-center mt-5">
-          <div className="col-4">
-            <h2 className="text-center h5">Nb de clients / Nb de factures</h2>
-            <Doughnut
-              data={chartCustomersClientsData}
-              options={{
-                legend: { position: 'bottom' }
-              }}
-            />
-          </div>
-          <div className="col-4">
-            <h2 className="text-center h5">Catégories des projets</h2>
-            <Pie
-              data={chartCategoriesInvoices}
-              options={{ legend: { display: false } }}
-            />
-          </div>
-          <div className="col-4">
-            <h2 className="text-center h5">Factures payés / en attente</h2>
-            <Doughnut
-              data={chartInvoicesStatus}
-              options={{ legend: { position: 'bottom' } }}
-            />
-          </div>
-        </div>
+        )}
+        {customers.length < 1 && invoices.length < 1 && (
+          <p className="text-center">
+            Vous devez créer des clients et des factures afin d'obtenir des
+            données visuelles
+          </p>
+        )}
       </div>
     )
   }
