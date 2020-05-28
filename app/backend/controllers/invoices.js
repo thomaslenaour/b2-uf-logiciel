@@ -81,7 +81,7 @@ const createInvoice = async (req, res, next) => {
   const { category, amount, isPaid, invoicePdf, customerId } = req.body
 
   const createdInvoice = new Invoice({
-    category,
+    category: category.trim().toLowerCase(),
     reference: new Date().getTime(),
     amount,
     invoice_pdf: invoicePdf,
