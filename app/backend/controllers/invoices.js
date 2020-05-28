@@ -172,9 +172,9 @@ const updateInvoice = async (req, res, next) => {
 
   invoice.category = category
   invoice.amount = amount
-  invoice.isPaid = isPaid
-  invoice.invoicePdf = invoicePdf
-  invoice.customerId = customerId
+  invoice.is_paid = isPaid
+  invoice.invoice_pdf = invoicePdf
+  invoice.customer = customerId
   invoice.updated_at = new Date().getTime()
 
   try {
