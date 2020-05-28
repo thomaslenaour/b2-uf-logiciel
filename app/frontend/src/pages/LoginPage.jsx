@@ -27,7 +27,7 @@ const LoginPage = ({ history }) => {
     try {
       const data = await AuthAPI.authenticate(credentials)
       setErrorLogin('d-none')
-      auth.login(data.userId, data.token)
+      auth.login(data.userId, data.token, data.cotisationPct)
       toast.success('Vous êtes désormais connecté ✅')
       history.push('/')
     } catch (error) {

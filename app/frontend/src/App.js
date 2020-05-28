@@ -31,21 +31,26 @@ const App = () => {
 
   const [token, setToken] = useState(store.get('token'))
   const [userId, setUserId] = useState(store.get('userId'))
+  const [cotisationPct, setCotisationPct] = useState(store.get('cotisationPct'))
 
-  const login = useCallback((userId, token) => {
+  const login = useCallback((userId, token, cotisationPct) => {
     store.set('token', token)
     store.set('userId', userId)
+    store.set('cotisationPct', cotisationPct)
 
     setToken(token)
     setUserId(userId)
+    setCotisationPct(cotisationPct)
   })
 
   const logout = useCallback(() => {
     store.delete('token')
     store.delete('userId')
+    store.delete('cotisationPct')
 
     setToken(null)
     setUserId(null)
+    setCotisationPct(null)
   })
 
   let routes
@@ -72,7 +77,14 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: !!token, token, userId, login, logout }}
+      value={{
+        isLoggedIn: !!token,
+        token,
+        userId,
+        cotisationPct,
+        login,
+        logout
+      }}
     >
       <Router>
         <NavbarWithRouter />

@@ -222,7 +222,12 @@ const login = async (req, res, next) => {
     )
   }
 
-  res.json({ userId: user.id, email: user.email, token })
+  res.json({
+    userId: user.id,
+    email: user.email,
+    cotisationPct: user.contribution_pct,
+    token
+  })
 }
 
 exports.getUser = getUser

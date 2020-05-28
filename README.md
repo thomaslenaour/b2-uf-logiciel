@@ -13,4 +13,8 @@ Création d'un CRM visant à faciliter la gestion et l'analyse globale pour les 
 
 ## Getting started
 
-Coming soon.
+1. Cloner le repository `git clone https://github.com/tlnkorr/b2-uf-logiciel`
+2. Aller dans le repository `cd b2-uf-logiciel/app/backend`
+3. Lancer la commande `npm install` puis `npm start`
+4. Ouvrez un deuxième terminal et aller dans le dossier `b2-uf-logiciel/app/frontend`
+5. Lancer la commande `npm install` puis `npm start`

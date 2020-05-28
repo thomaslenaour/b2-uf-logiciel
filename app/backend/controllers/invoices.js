@@ -9,10 +9,9 @@ const HttpError = require('../models/http-error')
 const getInvoices = async (req, res, next) => {
   let invoices
   try {
-    invoices = await Invoice.find({ creator: req.userData.userId }).populate(
-      'creator',
-      '-password'
-    )
+    invoices = await Invoice.find({ creator: req.userData.userId })
+      .populate('creator', '-password')
+      .populate('customer')
   } catch (err) {
     return next(
       new HttpError(
@@ -29,6 +28,10 @@ const getInvoices = async (req, res, next) => {
         404
       )
     )
+  }
+
+  if (invoices.length < 1) {
+    return next(new HttpError('Pas de factures', 404))
   }
 
   const invoicesCreatorId = invoices.map(invoice => invoice.creator.id)
