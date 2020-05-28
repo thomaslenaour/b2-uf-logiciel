@@ -164,7 +164,7 @@ const HomePage = () => {
   if (auth.isLoggedIn) {
     return (
       <div className="container" id="dashboard">
-        <h2 className="display-2 text-center mb-5" id="dashboard_title">
+        <h2 className="h3 text-center mb-5" id="dashboard_title">
           Dashboard{' '}
           <span role="img" aria-label="Emoji Graphique">
             📈

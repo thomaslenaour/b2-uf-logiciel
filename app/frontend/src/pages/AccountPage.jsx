@@ -56,7 +56,7 @@ const AccountPage = withRouter(({ history, changeCotisation }) => {
 
   return (
     <>
-      <h1 className="text-center my-5 display-3">
+      <h1 className="text-center my-5 h3">
         Modifier mes informations
         <span aria-label="Inscription" role="img" className="ml-3">
           🧑‍💻

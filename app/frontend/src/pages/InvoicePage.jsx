@@ -101,12 +101,10 @@ const InvoicePage = ({ match, history }) => {
   return (
     <>
       {(editing && (
-        <h1 className="text-center display-3 my-5">
+        <h1 className="text-center h3 my-5">
           Modification de la facture n°{id}
         </h1>
-      )) || (
-        <h1 className="text-center display-3 my-5">Création d'une facture</h1>
-      )}
+      )) || <h1 className="text-center h3 my-5">Création d'une facture</h1>}
       <div className="container">
         <form onSubmit={handleSubmit}>
           <Field

@@ -73,9 +73,9 @@ const CustomerPage = ({ match, history }) => {
   return (
     <>
       {(!editing && (
-        <h1 className="text-center my-5 display-3">Création d'un client</h1>
+        <h1 className="text-center my-5 h3">Création d'un client</h1>
       )) || (
-        <h1 className="text-center my-5 display-3">
+        <h1 className="text-center my-5 h3">
           Modification du client
           {` ${customerName}`}
         </h1>

@@ -68,7 +68,7 @@ const CustomersPage = () => {
 
   return (
     <div className="container my-5">
-      <h1 className="text-center my-5 display-3">
+      <h1 className="text-center my-5 h3">
         Mes clients
         <span aria-label="Inscription" role="img" className="ml-3">
           💼
