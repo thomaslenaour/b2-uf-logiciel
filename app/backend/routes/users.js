@@ -12,7 +12,7 @@ router.post(
   [
     check('name').not().isEmpty(),
     check('email').normalizeEmail().isEmail(),
-    check('password').isLength({ min: 6 }),
+    check('password').not().isEmpty(),
     check('passwordConfirmation').custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error('Les mots de passes ne correspondent pas')

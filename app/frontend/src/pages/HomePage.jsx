@@ -2,7 +2,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Line, Doughnut, Pie } from 'react-chartjs-2'
-import { toast } from 'react-toastify'
 import CustomersAPI from '../services/CustomersAPI'
 import InvoiceAPI from '../services/InvoicesAPI'
 
@@ -39,7 +38,9 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    fetchData()
+    if (auth.isLoggedIn) {
+      fetchData()
+    }
   }, [])
 
   const caTotal = invoices
@@ -55,7 +56,7 @@ const HomePage = () => {
     })
     .reduce((acc, currentVal) => acc + currentVal, 0)
 
-  const cotisations = (caMensuel * 11) / 100
+  const cotisations = (caMensuel * auth.cotisationPct) / 100
 
   const caData = Array(12).fill(0)
   invoices.forEach(invoice => {
@@ -122,7 +123,7 @@ const HomePage = () => {
         pointHoverBorderWidth: 2.5,
         pointRadius: 1.5,
         pointHitRadius: 10,
-        data: caData.map(ca => ca - (ca * 11) / 100)
+        data: caData.map(ca => ca - (ca * auth.cotisationPct) / 100)
       }
     ]
   }
@@ -148,7 +149,7 @@ const HomePage = () => {
   }
 
   const chartInvoicesStatus = {
-    labels: ['Payé', 'En attente'],
+    labels: ['Payée', 'En attente'],
     datasets: [
       {
         backgroundColor: ['rgb(72, 187, 120)', 'rgb(160, 174, 192)'],
@@ -225,7 +226,7 @@ const HomePage = () => {
                 />
               </div>
               <div className="col-4">
-                <h2 className="text-center h5">Factures payés / en attente</h2>
+                <h2 className="text-center h5">Factures payées / en attente</h2>
                 <Doughnut
                   data={chartInvoicesStatus}
                   options={{ legend: { position: 'bottom' } }}

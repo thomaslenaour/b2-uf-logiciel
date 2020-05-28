@@ -94,7 +94,7 @@ const InvoicesPage = () => {
       <table className="table table-hover mt-5">
         <thead>
           <tr>
-            <th>#</th>
+            <th>Ref.</th>
             <th>Client</th>
             <th>Categorie</th>
             <th>Amount</th>
@@ -107,7 +107,7 @@ const InvoicesPage = () => {
           {paginatedInvoices.map(invoice => (
             <tr key={invoice.id}>
               <td>{invoice.reference}</td>
-              <td>Nom & Prénom</td>
+              <td>{invoice.customer.name}</td>
               <td>{invoice.category}</td>
               <td>{invoice.amount} €</td>
               <td>
