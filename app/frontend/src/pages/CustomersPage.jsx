@@ -95,6 +95,7 @@ const CustomersPage = () => {
             <th>Client</th>
             <th>Téléphone</th>
             <th>Ville</th>
+            <th>Adresse</th>
             <th className="text-center">Code Postal</th>
             <th className="text-center">Actions</th>
           </tr>
@@ -105,6 +106,7 @@ const CustomersPage = () => {
               <td>{customer.name}</td>
               <td>{customer.phone}</td>
               <td>{customer.city}</td>
+              <td>{customer.address}</td>
               <td className="text-center">{customer.postal_code}</td>
               <td className="text-center">
                 <button

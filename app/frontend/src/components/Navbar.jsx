@@ -66,6 +66,16 @@ const Navbar = ({ history }) => {
                 </button>
               </li>
             )}
+            {auth.isLoggedIn && (
+              <li className="nav-item">
+                <NavLink
+                  to="/account"
+                  className="btn btn-light text-primary border-primary mx-2"
+                >
+                  Mon compte
+                </NavLink>
+              </li>
+            )}
             {!auth.isLoggedIn && (
               <li className="nav-item">
                 <NavLink

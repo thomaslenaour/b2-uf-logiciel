@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import AuthAPI from './services/AuthAPI'
 import './assets/styles/styles.css'
 import Footer from './components/Footer'
+import AccountPage from './pages/AccountPage'
 
 const Store = window.require('electron-store')
 AuthAPI.setup()
@@ -54,6 +55,7 @@ const App = () => {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/customers" component={CustomersPage} />
         <Route exact path="/invoices" component={InvoicesPage} />
+        <Route exact path="/account" component={AccountPage} />
         <Route exact path="/customers/:id" component={CustomerPage} />
         <Route exact path="/invoices/:id" component={InvoicePage} />
       </Switch>

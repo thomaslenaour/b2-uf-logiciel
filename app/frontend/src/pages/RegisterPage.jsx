@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import Field from '../components/Field'
 import UsersAPI from '../services/UsersAPI'
 
@@ -28,13 +29,16 @@ const RegisterPage = ({ history }) => {
       if (credentials.passwordConfirmation === credentials.password) {
         await UsersAPI.createUser(credentials)
         setErrorRegistration('d-none')
+        toast.success(
+          "Votre compte vient d'être crée, vous pouvez vous connecter ✅"
+        )
         history.push('/login')
       } else {
         setErrorRegistration('')
-        console.log('mdp inccorect')
       }
     } catch (error) {
       setErrorRegistration('')
+      toast.error('Une erreur est survenue ❌')
     }
   }
 
