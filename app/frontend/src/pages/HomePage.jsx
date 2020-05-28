@@ -168,7 +168,7 @@ const HomePage = () => {
         </h2>
         {customers.length > 0 && invoices.length > 0 && (
           <div>
-            <div className="row mb-5">
+            <div className="row mb-5" id="dashboard_cards">
               <div className="col-4">
                 <div className="card p-2">
                   <p className="h5 text-center">CA total</p>
