@@ -31,7 +31,7 @@ const getInvoices = async (req, res, next) => {
   }
 
   if (invoices.length < 1) {
-    return next(new HttpError('Pas de factures', 404))
+    return res.json({ invoices: [] })
   }
 
   const invoicesCreatorId = invoices.map(invoice => invoice.creator.id)

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const HttpError = require('../models/http-error')
 const User = require('../models/user')
 const Customer = require('../models/customer')
+const Invoice = require('../models/invoice')
 
 const getCustomers = async (req, res, next) => {
   let user
@@ -190,6 +191,8 @@ const deleteCustomer = async (req, res, next) => {
   }
 
   try {
+    await Invoice.deleteMany({ customer: customerId })
+
     const session = await mongoose.startSession()
 
     session.startTransaction()

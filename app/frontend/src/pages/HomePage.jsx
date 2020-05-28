@@ -41,7 +41,7 @@ const HomePage = () => {
     if (auth.isLoggedIn) {
       fetchData()
     }
-  }, [])
+  }, [auth.isLoggedIn])
 
   const caTotal = invoices
     .map(invoice => +invoice.amount)
@@ -165,7 +165,10 @@ const HomePage = () => {
     return (
       <div className="container" id="dashboard">
         <h2 className="display-2 text-center mb-5" id="dashboard_title">
-          Dashboard 📈
+          Dashboard{' '}
+          <span role="img" aria-label="Emoji Graphique">
+            📈
+          </span>
         </h2>
         {customers.length > 0 && invoices.length > 0 && (
           <div>
@@ -235,7 +238,7 @@ const HomePage = () => {
             </div>
           </div>
         )}
-        {customers.length < 1 && invoices.length < 1 && (
+        {invoices.length < 1 && (
           <p className="text-center">
             Vous devez créer des clients et des factures afin d'obtenir des
             données visuelles

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import CustomersAPI from '../services/CustomersAPI'
@@ -18,32 +18,35 @@ const InvoicePage = ({ match, history }) => {
   })
   const [customers, setCustomers] = useState([])
 
-  const fetchInvoice = async id => {
-    try {
-      const data = await InvoicesAPI.findById(id).then(
-        response => response.data.invoice
-      )
-      if (data.is_paid === true) {
-        data.is_paid = '1'
-      } else {
-        data.is_paid = '0'
+  const fetchInvoice = useCallback(
+    async id => {
+      try {
+        const data = await InvoicesAPI.findById(id).then(
+          response => response.data.invoice
+        )
+        if (data.is_paid === true) {
+          data.is_paid = '1'
+        } else {
+          data.is_paid = '0'
+        }
+        setInvoice({
+          category: data.category,
+          amount: data.amount,
+          isPaid: data.is_paid,
+          customerId: data.customer,
+          invoicePdf: data.invoice_pdf
+        })
+      } catch (error) {
+        toast.error(
+          'Une erreur est survenue lors de la récupération de la facture ❌'
+        )
+        history.push('/invoices')
       }
-      setInvoice({
-        category: data.category,
-        amount: data.amount,
-        isPaid: data.is_paid,
-        customerId: data.customer,
-        invoicePdf: data.invoice_pdf
-      })
-    } catch (error) {
-      toast.error(
-        'Une erreur est survenue lors de la récupération de la facture ❌'
-      )
-      history.push('/invoices')
-    }
-  }
+    },
+    [history]
+  )
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     try {
       const data = await CustomersAPI.findAll().then(
         response => response.data.customers
@@ -57,7 +60,7 @@ const InvoicePage = ({ match, history }) => {
       )
       history.push('/invoices')
     }
-  }
+  }, [history, id, invoice])
 
   // Récupération de la bonne facture quand l'id change
   useEffect(() => {
@@ -65,11 +68,11 @@ const InvoicePage = ({ match, history }) => {
       setEditing(true)
       fetchInvoice(id)
     }
-  }, [id])
+  }, [id, fetchInvoice])
 
   useEffect(() => {
     fetchCustomers()
-  }, [])
+  }, [fetchCustomers])
 
   // Gestion des changements des input dans le formulaire
   const handleChange = ({ currentTarget }) => {

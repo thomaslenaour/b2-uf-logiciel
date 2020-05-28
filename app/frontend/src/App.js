@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import {
   BrowserRouter as Router,
@@ -33,7 +33,7 @@ const App = () => {
   const [userId, setUserId] = useState(store.get('userId'))
   const [cotisationPct, setCotisationPct] = useState(store.get('cotisationPct'))
 
-  const login = useCallback((userId, token, cotisationPct) => {
+  const login = (userId, token, cotisationPct) => {
     store.set('token', token)
     store.set('userId', userId)
     store.set('cotisationPct', cotisationPct)
@@ -41,9 +41,9 @@ const App = () => {
     setToken(token)
     setUserId(userId)
     setCotisationPct(cotisationPct)
-  })
+  }
 
-  const logout = useCallback(() => {
+  const logout = () => {
     store.delete('token')
     store.delete('userId')
     store.delete('cotisationPct')
@@ -51,7 +51,7 @@ const App = () => {
     setToken(null)
     setUserId(null)
     setCotisationPct(null)
-  })
+  }
 
   const handleChangeCotisation = newCotisation => {
     store.set('cotisationPct', newCotisation)
