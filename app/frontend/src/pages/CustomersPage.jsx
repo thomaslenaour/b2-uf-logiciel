@@ -9,7 +9,7 @@ const CustomersPage = () => {
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
 
-  const itemsPerPage = 7
+  const itemsPerPage = 10
 
   // Permet d'aller récupérer les customers
   const fetchCustomers = async () => {

@@ -66,7 +66,7 @@ const CustomerPage = ({ match, history }) => {
       }
       history.push('/customers')
     } catch (error) {
-      console.log(error.response)
+      toast.error('Une erreur est survenue, veuillez réessayer ❌')
     }
   }
 
