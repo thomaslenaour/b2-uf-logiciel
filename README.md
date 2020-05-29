@@ -11,10 +11,43 @@ Création d'un CRM visant à faciliter la gestion et l'analyse globale pour les 
 **Choix du langage :** JavaScript  
 **Choix des technologies :** React.js, Electron.js, Node.js, Express.js, MongoDB
 
-## Getting started
+## Installation
 
-1. Cloner le repository `git clone https://github.com/tlnkorr/b2-uf-logiciel`
-2. Aller dans le repository `cd b2-uf-logiciel/app/backend`
-3. Lancer la commande `npm install` puis `npm start`
-4. Ouvrez un deuxième terminal et aller dans le dossier `b2-uf-logiciel/app/frontend`
-5. Lancer la commande `npm install` puis `npm start`
+**Prérequis :** Avoir Node.js sur sa machine avec NPM
+
+- Cloner le repository
+
+```
+git clone https://github.com/tlnkorr/b2-uf-logiciel
+cd b2-uf-logiciel
+```
+
+- Installation de `foreman` sur le système afin de pouvoir lancer l'application
+
+```
+npm install foreman -g
+```
+
+- Ouvrir 2 terminaux (ci-après `T1` et `T2`) et se rendre respectivement dans les dossiers `app/frontend` et `app/backend` afin d'installer les dépendances
+
+```
+# T1
+cd app/frontend
+npm install
+
+# T2
+cd app/backend
+npm install
+```
+
+- Lancement de l'application
+
+```
+# T1 app/frontend
+npm start
+
+# T2 app/backend
+npm start
+```
+
+## Utilisation
