@@ -6,6 +6,8 @@ Création d'un CRM visant à faciliter la gestion et l'analyse globale pour les 
 
 **Fonctionnalités principales :** Gestion d'un portefeuille client, gestion des factures, gestion du CA (graphiques, analyses), gestion des paramètres utilisateurs
 
+!["Screen de l'application"](livrables/app.png)
+
 ## Stack technique
 
 **Choix du langage :** JavaScript  
