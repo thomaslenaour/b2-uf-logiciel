@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "tlnkorr",
+    "DB_PASSWORD": "thomaslenaour",
+    "DB_NAME": "ynovcrm",
+    "JWT_KEY": "c1b7baeb-e9a9-49b0-8d60-6e2905961182"
+  }
+}

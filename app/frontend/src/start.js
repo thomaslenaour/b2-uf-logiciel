@@ -14,8 +14,6 @@ function createWindow() {
     }
   })
 
-  mainWindow.webContents.openDevTools()
-
   mainWindow.loadURL(
     process.env.ELECTRON_START_URL ||
       url.format({
