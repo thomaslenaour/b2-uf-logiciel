@@ -6,7 +6,7 @@ Création d'un CRM visant à faciliter la gestion et l'analyse globale pour les 
 
 **Fonctionnalités principales :** Gestion d'un portefeuille client, gestion des factures, gestion du CA (graphiques, analyses), gestion des paramètres utilisateurs
 
-!["Screen de l'application"](livrables/app.png)
+!["Screen de l'application"](livrables/screens/app.png)
 
 ## Stack technique
 
@@ -82,3 +82,9 @@ L'application se comporte de **11 pages** : accueil, connexion, inscription, das
 **Paramètres**
 
 - Possibilité de modifier les informations du compte utilisateur
+
+## Captures d'écran
+
+!["Screen de l'application"](livrables/screens/screen1.png)
+!["Screen de l'application"](livrables/screens/screen2.png)
+!["Screen de l'application"](livrables/screens/screen3.png)
